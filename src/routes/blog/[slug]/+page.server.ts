@@ -1,6 +1,7 @@
 
 import type { PageServerLoad } from './$types';
 import {error} from "@sveltejs/kit";
+import { compile} from "mdsvex";
 
 export const load: PageServerLoad = async ({ params }) => {
 // console.log(params)
@@ -15,8 +16,12 @@ export const load: PageServerLoad = async ({ params }) => {
         throw  error(404, 'Not found')
 
     }
+    console.log(json.data[0].attributes.content)
+    const compiled = await compile(json.data[0].attributes.content)
+    console.log(compiled)
     return {
         status: 200,
         json,
+        content: compiled?.code
     }
 }

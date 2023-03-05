@@ -7,6 +7,7 @@ const config = {
 	// for more information about preprocessors
 	preprocess: preprocess({ postcss: true }),
 
+	extensions: [".svelte"],
 	kit: {
 		adapter: adapter()
 	}

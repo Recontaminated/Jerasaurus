@@ -1,15 +1,10 @@
-<!-- src/routes/blog/[id].svelte -->
+<script lang="ts">
+    import Header from "$lib/components/Header.svelte";
 
-<script>
-    export let data;
-    let content = data.json;
+    export let data = {
+        content: ''
+    };
 </script>
-
-<h1>{JSON.stringify(content)}</h1>
-
-<style>
-   h1 {
-      color: white;
-   }
-</style>
+<Header />
+<div style="padding-top: 6rem">{@html data.content}</div>
 
