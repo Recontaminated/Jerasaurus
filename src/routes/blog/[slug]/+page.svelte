@@ -1,11 +1,14 @@
 <script lang="ts">
     import "$lib/styles/style.scss"
     import Header from "$lib/components/Header.svelte";
-
+    import {onMount} from "svelte";
     export let data = {
         content: ''
     };
-    Prism
+    //call code on the browser
+    onMount(() => {
+        window.Prism.highlightAll();
+    })
 </script>
 
 <svelte:head>

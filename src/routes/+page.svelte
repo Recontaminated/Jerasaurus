@@ -28,6 +28,6 @@
 
 
 </style>
-<svelte:head>
-    <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
-</svelte:head>
+<!--<svelte:head>-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">-->
+<!--</svelte:head>-->
