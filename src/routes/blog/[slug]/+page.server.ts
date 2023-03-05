@@ -1,8 +1,8 @@
 
 import type { PageServerLoad } from './$types';
 import {error} from "@sveltejs/kit";
-import { compile} from "mdsvex";
-
+import showdown from "showdown";
+const converter = new showdown.Converter();
 export const load: PageServerLoad = async ({ params }) => {
 // console.log(params)
 // console.log(params.slug)
@@ -17,11 +17,11 @@ export const load: PageServerLoad = async ({ params }) => {
 
     }
     console.log(json.data[0].attributes.content)
-    const compiled = await compile(json.data[0].attributes.content)
+    const compiled = converter.makeHtml(json.data[0].attributes.content)
     console.log(compiled)
     return {
         status: 200,
         json,
-        content: compiled?.code
+        content: compiled
     }
 }
