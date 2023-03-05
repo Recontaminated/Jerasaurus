@@ -1,0 +1,48 @@
+.effect-3 {
+  display: inline-block;
+
+  overflow: hidden;
+  //background: red;
+  height: 100%;
+  &:before {
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    height: 2px;
+    background: #6083ff;
+    transform: translateX(-101%);
+  }
+
+  &:hover:before {
+    transform: translateX(0);
+
+  }
+  &:hover {
+    color: #ffffff;
+  }
+
+
+
+}
+
+
+
+a {
+  position: relative;
+  text-decoration: none;
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    transition: transform .5s ease;
+  }
+}
+
+nav a.active {
+  &:before {
+    transform: translateX(0);
+  }
+
+  color: white;
+
+
+}

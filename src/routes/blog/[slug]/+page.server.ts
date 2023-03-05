@@ -1,0 +1,22 @@
+
+import type { PageServerLoad } from './$types';
+import {error} from "@sveltejs/kit";
+
+export const load: PageServerLoad = async ({ params }) => {
+// console.log(params)
+// console.log(params.slug)
+    // // Now, we'll fetch the blog post from Strapi
+    const res = await fetch(`http://localhost:1337/api/posts?filters[slug][$eq]=${params.slug}`);
+
+    const json = await res.json();
+
+    console.log(json.data.length)
+    if (json.data.length === 0) {
+        throw  error(404, 'Not found')
+
+    }
+    return {
+        status: 200,
+        json,
+    }
+}

@@ -1,26 +1,33 @@
 <script lang="ts">
-</script>
 
-<div class="my-4">
-	<h1 class="text-center text-3xl font-bold">my cool blog</h1>
+    import Header from '$lib/components/Header.svelte';
+    import '$lib/styles/homepage.scss';
+</script>
+<Header></Header>
+<!--TODO: make this more device freindly-->
+<div class="main-content">
+    <div class="content-container">
+        <div class="hero-wrapper">
+            <header class="hero-index hero">
+                <h1>Hey, I'm Jeremy!</h1>
+            </header>
+           <p class="hero-description">
+               Welcome to my digital archive 🗃️
+               <br><br>
+                I'm a software developer who sometimes plays drums. I work on open source projects to try and automate boring things.  I like birds, space, and Blink-182.
+
+           </p>
+        </div>
+    </div>
 </div>
 
-<h1 class="text-center">Welcome to SvelteKit</h1>
-<p class="text-3xl">
-	Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
-</p>
-
 <style>
-	:global(:root) {
-		--content-width: 1160px;
-		--font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial,
-			sans-serif;
-		--font-family-monospace: Menlo, 'IBM Plex Mono', Menlo, monospace;
-		--font-family-heading: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-		--font-family-nav: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-    	--background-color: #1f1f1f;
-		/* --background-color: #333333 */
-		background-color: var(--background-color);
+    .main-content{
+        padding-top: 4rem;
+    }
 
-	}
+
 </style>
+<svelte:head>
+    <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
+</svelte:head>

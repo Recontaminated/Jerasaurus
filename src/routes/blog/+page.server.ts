@@ -11,6 +11,5 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ params }) => {
 	const posts = await fetch('http://localhost:1337/api/posts');
 	const json = await posts.json();
-	console.log(json);
 	return { json };
 };

@@ -5,11 +5,12 @@
 </script>
 
 <!-- +layout.svelte -->
-<Header>Hi, I'm a header</Header>
 
 
 <main>
 	<slot />
 </main>
 
-<footer>Hello, I'm the footer.</footer>
+<style>
+
+</style>

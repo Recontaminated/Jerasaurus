@@ -3,4 +3,3 @@
 </script>
 
 <Header />
-<h1>Hi im jeremy</h1>
