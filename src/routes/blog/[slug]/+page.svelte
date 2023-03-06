@@ -1,6 +1,7 @@
 <script lang="ts">
     import "$lib/styles/style.scss"
     import Header from "$lib/components/Header.svelte";
+    import "$lib/styles/blogStyles.scss"
     import {onMount} from "svelte";
     export let data = {
         content: ''
@@ -20,5 +21,9 @@
 
 <Header />
 <div class="content-container">
+    <div class="blog-title">
+        <h1>{data.title}</h1>
+        <p>{data.date}</p>
+    </div>
 <div style="padding-top: 6rem">{@html data.content}</div>
 </div>

@@ -43,7 +43,7 @@
 
 <style>
     .brand {
-        font-family: var(--font-family-base);
+        font-family:Inter, Roboto, sans-serif;
         font-weight: 700;
         color: white;
         padding-bottom: 20px;
