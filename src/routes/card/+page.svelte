@@ -2,40 +2,86 @@
     import Header from "$lib/components/Header.svelte";
 </script>
 
-<Header />
-<h1 class="text-center">Heres how to contact me</h1>
+<svelte:head>
 
+    <script src="https://kit.fontawesome.com/8f18523747.js" crossorigin="anonymous"></script>
+</svelte:head>
+<Header/>
 <div class="card">
     <div class="image">
-        <img src="https://images.duckarmada.com/dYyERPXpJOwK/direct.png" alt="me" />
+        <img src="https://images.duckarmada.com/dYyERPXpJOwK/direct.png" alt="me"/>
     </div>
     <div class="content">
-        <h2>My name is <span class="name">Duck Armada</span></h2>
-        <p>My email is <span class="email">
-        </span>
-        </p>
+        <h2 class="name">Jeremy Hsieh</h2>
+    </div>
+    <div class="social">
+
+        <a class="fa fa-brands fa-discord"></a>
+        <a class="fa fa-brands fa-github"></a>
     </div>
 </div>
 
 <style>
-.card {
 
-    background: hsl(0, 0%, 5%);
-    margin: auto;
-    width: 30%;
-    border-radius: 30px;
-    height: 30rem;
+    .card {
 
+        background: hsl(0, 0%, 5%);
+        margin: auto;
+        width: 90%;
+        max-width: 500px;
+        border-radius: 30px;
+        height: 30rem;
+        overflow: hidden;
 
     }
+
     /*center image*/
-    .image {
-        width: 18rem;
-        height: 18rem;
-        background-color: #000;
+    img {
+
+        width: 50%;
         overflow: hidden;
-        margin: 0 auto;
         border-radius: 50%;
+        margin: auto;
+        margin-top: 30px;
+    }
+
+    .image {
+        margin-top: 10px;
+    }
+
+    .name {
+        text-align: center;
+        font-size: 2rem;
+        margin-top: 1rem;
+        color: #fff;
+    }
+    .social {
+        box-sizing: unset;
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    /*    font awesome*/
+    /* Style all font awesome icons */
+    .fa {
+        position: relative;
+        padding: 20px;
+        font-size: 30px;
+        width: 50px;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    /*!* Add a hover effect if you want *!*/
+    /*.fa:hover {*/
+    /*    opacity: 0.7;*/
+    /*}*/
+
+    /* Set a specific color for each brand */
+    .fa-discord {
+        background: #7289da;
+        color: white;
     }
 
 </style>
