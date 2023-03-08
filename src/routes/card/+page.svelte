@@ -2,10 +2,7 @@
     import Header from "$lib/components/Header.svelte";
 </script>
 
-<svelte:head>
 
-    <script src="https://kit.fontawesome.com/8f18523747.js" crossorigin="anonymous"></script>
-</svelte:head>
 <Header/>
 <div class="card">
     <div class="image">
@@ -16,15 +13,18 @@
     </div>
     <div class="social">
 
-        <a class="fa fa-brands fa-discord"></a>
-        <a class="fa fa-brands fa-github"></a>
+        <a href="https://discord.com/channels/397986807607721985" class="fa fa-brands fa-discord"></a>
+        <a href="https://github.com/Recontaminated" class="fa fa-brands fa-github"></a>
     </div>
+
+    <a href= "https://images.duckarmada.com/OBzaxWzmFtMN/direct?download=yes" class="m-6 content-center fa fa-address-book"> </a>
 </div>
 
 <style>
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css');
 
     .card {
-
+        text-align: center;
         background: hsl(0, 0%, 5%);
         margin: auto;
         width: 90%;
@@ -55,6 +55,7 @@
         margin-top: 1rem;
         color: #fff;
     }
+
     .social {
         box-sizing: unset;
         display: flex;
@@ -66,22 +67,36 @@
     /* Style all font awesome icons */
     .fa {
         position: relative;
-        padding: 20px;
+        padding: 5px;
         font-size: 30px;
         width: 50px;
         text-align: center;
         text-decoration: none;
+        border-radius: 10%;
     }
 
-    /*!* Add a hover effect if you want *!*/
-    /*.fa:hover {*/
-    /*    opacity: 0.7;*/
-    /*}*/
+    /* Add a hover effect if you want */
+    .fa:hover {
+        opacity: 0.7;
+    }
 
     /* Set a specific color for each brand */
     .fa-discord {
         background: #7289da;
         color: white;
+        width: fit-content;
+    }
+
+    .fa-github {
+        background: #333;
+        color: white;
+        width: fit-content;
+    }
+
+    .fa-address-book {
+        background: #44403c;
+        border-radius: 10px;
+        width: 50%
     }
 
 </style>
