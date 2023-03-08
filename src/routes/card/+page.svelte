@@ -11,13 +11,13 @@
     <div class="content">
         <h2 class="name">Jeremy Hsieh</h2>
     </div>
+    <a class="text-center"> My socials </a>
     <div class="social">
-
         <a href="https://discord.com/channels/397986807607721985" class="fa fa-brands fa-discord"></a>
         <a href="https://github.com/Recontaminated" class="fa fa-brands fa-github"></a>
     </div>
 
-    <a href= "https://images.duckarmada.com/OBzaxWzmFtMN/direct?download=yes" class="m-6 content-center fa fa-address-book"> </a>
+    <a href= "https://images.duckarmada.com/OBzaxWzmFtMN/direct?download=yes" class="save-link content-center">Save To Contacts </a>
 </div>
 
 <style>
@@ -30,8 +30,9 @@
         width: 90%;
         max-width: 500px;
         border-radius: 30px;
-        height: 30rem;
+        height: 60vh;
         overflow: hidden;
+        position: relative;
 
     }
 
@@ -68,7 +69,7 @@
     .fa {
         position: relative;
         padding: 5px;
-        font-size: 30px;
+        font-size: 40px;
         width: 50px;
         text-align: center;
         text-decoration: none;
@@ -92,11 +93,14 @@
         color: white;
         width: fit-content;
     }
-
-    .fa-address-book {
-        background: #44403c;
+    .save-link{
+        display: block;
+        background: #767dd6;
+        width: 50%;
+        margin: auto;
+        margin-top: 1rem;
+        padding: 8px;
         border-radius: 10px;
-        width: 50%
     }
 
 </style>
