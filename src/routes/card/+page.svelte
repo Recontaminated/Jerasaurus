@@ -33,6 +33,8 @@
         height: 60vh;
         overflow: hidden;
         position: relative;
+        display: block;
+        margin-top: 2rem;
 
     }
 
