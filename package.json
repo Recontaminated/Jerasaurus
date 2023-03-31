@@ -38,6 +38,7 @@
 	"type": "module",
 	"dependencies": {
 		"cssnano": "^5.1.15",
+		"prismjs": "^1.29.0",
 		"showdown": "^2.1.0"
 	}
 }
