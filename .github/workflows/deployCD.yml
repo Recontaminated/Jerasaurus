@@ -20,12 +20,14 @@ jobs:
     steps:
       - name: "Checkout branch"
         uses: actions/checkout@master
-      - name: Build
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
-      - run: npm run build
+      - name: build
+        run: |
+          npm ci
+          npm run build
       - name: Prep
         run: |
           mkdir -p ~/.ssh
