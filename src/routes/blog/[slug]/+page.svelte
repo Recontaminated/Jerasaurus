@@ -3,15 +3,15 @@
     import Header from "$lib/components/Header.svelte";
     // import "$lib/styles/blogStyles.scss"
     import {onMount} from "svelte";
-    // import Prism from 'prismjs';
+    import Prism from 'prismjs';
     export let data = {
         content: ''
     };
     //call code on the browser
-    // onMount(() => {
-    //
-    //     Prism.highlightAll();
-    // })
+    onMount(() => {
+
+        Prism.highlightAll();
+    })
 </script>
 
 <svelte:head>
