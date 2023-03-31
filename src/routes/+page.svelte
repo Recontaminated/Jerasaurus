@@ -29,5 +29,6 @@
 
 </style>
 <svelte:head>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
 </svelte:head>
