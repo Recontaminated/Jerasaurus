@@ -37,7 +37,7 @@ jobs:
       - name: Deploy
         run: |
           mkdir Jerasaurus
-          mv -r build Jerasaurus
+          mv build Jerasaurus
           mv package-lock.json Jerasaurus
           zip -r Jerasaurus.zip Jerasaurus
           scp -o StrictHostKeyChecking=no -o LogLevel=quiet build.zip ${{ secrets.SSH_STRING }}:~/Jerasaurus.zip
