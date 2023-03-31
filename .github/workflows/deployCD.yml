@@ -31,11 +31,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
       - name: Deploy
         run: |
           zip -r build.zip build
-          scp -o StrictHostKeyChecking=no build.zip ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/build.zip
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "unzip -o build.zip -d ~/Jerasaurus/build && rm build.zip"
+          scp -o StrictHostKeyChecking=no build.zip ${{ secrets.SSH_STRING }}:~/build.zip
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_STRING }} "unzip -o build.zip -d ~/Jerasaurus/build && rm build.zip"
           rm build.zip
