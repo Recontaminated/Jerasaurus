@@ -9,7 +9,7 @@ import type { PageServerLoad } from './$types';
 // }
 //write the commented function but correctly typed with pageServerLoad
 export const load: PageServerLoad = async ({ params }) => {
-	const posts = await fetch('http://localhost:1337/api/posts');
+	const posts = await fetch('http://127.0.0.1:1337/api/posts');
 	const json = await posts.json();
 	return { json };
 };
