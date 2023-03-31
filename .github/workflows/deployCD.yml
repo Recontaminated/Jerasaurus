@@ -36,6 +36,6 @@ jobs:
       - name: Deploy
         run: |
           zip -r build.zip build
-          scp -o StrictHostKeyChecking=no build.zip ${{ secrets.SSH_STRING }}:~/build.zip
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_STRING }} "unzip -o build.zip -d ~/Jerasaurus/build && rm build.zip"
+          scp -o StrictHostKeyChecking=no -o LogLevel=quiet build.zip ${{ secrets.SSH_STRING }}:~/build.zip
+          ssh -o StrictHostKeyChecking=no -o LogLevel=quiet ${{ secrets.SSH_STRING }} "unzip build.zip  && rm build.zip"
           rm build.zip
