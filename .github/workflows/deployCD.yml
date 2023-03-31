@@ -1,0 +1,41 @@
+name: Deploy To VPS
+
+on:
+  workflow_dispatch:
+    branches:
+      - master
+  push:
+    paths-ignore:
+      - 'package-lock.json'
+      - 'package.json'
+    branches:
+      - master
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: "Checkout branch"
+        uses: actions/checkout@master
+      - name: Build
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run build
+      - name: Prep
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+      - name: Deploy
+        run: |
+          zip -r build.zip build
+          scp -o StrictHostKeyChecking=no build.zip ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/build.zip
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "unzip -o build.zip -d ~/Jerasaurus/build && rm build.zip"
+          rm build.zip
