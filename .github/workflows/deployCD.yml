@@ -39,3 +39,17 @@ jobs:
           scp -o StrictHostKeyChecking=no -o LogLevel=quiet build.zip ${{ secrets.SSH_STRING }}:~/build.zip
           ssh -o StrictHostKeyChecking=no -o LogLevel=quiet ${{ secrets.SSH_STRING }} "mv build.zip Jerasaurus && cd Jerasaurus &&pm2 stop node > /dev/null && rm -r build && unzip build.zip  && rm build.zip && pm2 restart node > /dev/null"
           rm build.zip
+  lighthouse:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            https://jerasaurus.duckarmada.com/
+            https://jerasaurus.duckarmada.com/blog
+            https://jerasaurus.duckarmada.com/blog/te
+          uploadArtifacts: true # save results as an action artifacts
+          temporaryPublicStorage: true # upload lighthouse report to the temporary storage
