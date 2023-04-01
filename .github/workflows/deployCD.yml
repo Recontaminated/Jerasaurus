@@ -39,6 +39,7 @@ jobs:
           mkdir Jerasaurus
           mv build Jerasaurus
           mv package-lock.json Jerasaurus
+          mv package.json Jerasaurus
           zip -r Jerasaurus.zip Jerasaurus
           scp -o StrictHostKeyChecking=no -o LogLevel=quiet Jerasaurus.zip ${{ secrets.SSH_STRING }}:~/Jerasaurus.zip
           
