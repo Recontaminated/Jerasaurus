@@ -8,6 +8,7 @@
 	--font-family-nav: "apple-system", sans-serif;
 	--background-color: #181818;
 	--gray1: #e6e6e6;
+	--fontColorBase: var(--gray1);
 }
 body {
 	margin: 0;
@@ -16,7 +17,7 @@ body {
 	background-color: var(--background-color);
 }
 
-main p {
+.main-content p {
 
 
 	//color: #e5e7eb;
