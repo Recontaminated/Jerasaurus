@@ -6,6 +6,7 @@
 	//parse data.json
 	let posts = data.json;
 	posts = posts.data;
+
 </script>
 
 <Header></Header>
@@ -17,7 +18,7 @@
 	{#each posts as post}
 		<a href="/blog/{post.attributes.slug}">
 			<div class="bg-white shadow-md rounded-lg p-4 my-4 hover:bg-gray-200">
-				<h2 class="text-2xl font-bold">{post.attributes.Title}</h2>
+				<h2 class="text-black text-2xl font-bold">{post.attributes.title}</h2>
 				<p class="text-black">{post.attributes.description}</p>
 			</div>
 		</a>
