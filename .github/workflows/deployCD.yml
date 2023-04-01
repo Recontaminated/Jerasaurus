@@ -42,7 +42,7 @@ jobs:
           zip -r Jerasaurus.zip Jerasaurus
           scp -o StrictHostKeyChecking=no -o LogLevel=quiet Jerasaurus.zip ${{ secrets.SSH_STRING }}:~/Jerasaurus.zip
           
-          ssh -o StrictHostKeyChecking=no -o LogLevel=quiet ${{ secrets.SSH_STRING }} "mv Jerasaurus.zip Jerasaurus && rm -r Jerasaurus/*[^node_modules]/ && cd Jerasaurus &&pm2 stop node > /dev/null && rm -r build && unzip Jerasaurus.zip  && rm build.zip && npm ci && pm2 restart node > /dev/null"
+          ssh -o StrictHostKeyChecking=no -o LogLevel=quiet ${{ secrets.SSH_STRING }} "pm2 stop node > /dev/null && rm -r Jerasaurus && unzip Jerasaurus.zip  && rm Jerasaurus.zip && cd Jerasaurus && npm ci && pm2 restart node > /dev/null"
           rm build.zip
   lighthouse:
     needs: build
