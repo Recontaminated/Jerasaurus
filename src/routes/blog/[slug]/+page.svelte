@@ -28,7 +28,18 @@
     <hr style="border-top: 1px solid var(--fontColorBase);padding-bottom: 1rem ">
     <p>Last Updated {(data.json.data[0].attributes.updatedAt).slice(0,10)} </p>
 </div>
-<style>
+<style lang="scss">
+
+    /*@use "$lib/styles/blogStyles.scss"*/
+    .content-container {
+
+    :global(h1) {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: var(--fontColorBase);
+        margin-bottom: 1rem;
+    }
+
     .blog-title {
         font-family: Inter, sans-serif;
         font-size: 3rem;
@@ -36,10 +47,12 @@
         padding-bottom: 1rem;
         padding-top: 2rem;
     }
-    body{
+
+    :global(body) {
         color: var(--fontColorBase);
     }
-    h1 {
+
+    :global(h1) {
         font-family: Arial, Inter, sans-serif;
         font-size: 2rem;
         font-weight: 700;
@@ -47,15 +60,17 @@
 
     }
 
-    h2{
+    :global(h2) {
         font-family: Arial, Inter, sans-serif;
         font-size: 2rem;
         font-weight: 600;
         padding-bottom: 1rem;
     }
 
-    p {
+    :global(p) {
         padding-bottom: 1rem;
+
+    }
 
     }
 </style>
