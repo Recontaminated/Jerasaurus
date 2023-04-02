@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Warm up CDN"
-      - run: "curl --compressed --location jerasaurus.duckarmada.com"
+        run: "curl --compressed --location jerasaurus.duckarmada.com"
 
       - uses: actions/checkout@v3
       - name: Audit URLs using Lighthouse
