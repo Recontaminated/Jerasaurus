@@ -19,7 +19,7 @@
             </header>
 
             <div class="cool-image">
-                <img src="https://images.duckarmada.com/yOIF5efWLTiq/direct.png" alt="me">
+                <img src="https://images.duckarmada.com/Ot2dnnNVqcKh/direct.png" alt="me">
             </div>
         </div>
     </div>
