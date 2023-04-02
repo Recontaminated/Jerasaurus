@@ -8,15 +8,19 @@
 <div class="main-content">
     <div class="content-container">
         <div class="hero-wrapper">
-            <header class="hero-index hero">
-                <h1>Hey, I'm Jeremy!</h1>
-            </header>
-           <p class="hero-description">
-               Welcome to my digital archive 🗃️
-               <br><br>
-                I'm a software developer who sometimes plays drums. I work on open source projects to try and automate boring things.  I like birds, space, and Blink-182.
+            <header class="hero-index">
+                <h1 class="hero">Hey, I'm Jeremy!</h1>
+                <p class="hero-description">
+                    Welcome to my digital archive 🗃️
+                    <br><br>
+                    I'm a software developer who sometimes plays drums. I work on open source projects to try and automate boring things.  I like birds, space, and Blink-182.
 
-           </p>
+                </p>
+            </header>
+
+            <div class="cool-image">
+                <img src="https://images.duckarmada.com/yOIF5efWLTiq/direct.png" alt="me">
+            </div>
         </div>
     </div>
 </div>
@@ -25,6 +29,21 @@
     .main-content{
         padding-top: 4rem;
     }
+    .hero-wrapper{
+        display:grid;
+        align-items: center;
+        grid-template-columns: 3fr 2fr;
+        gap: 1rem
+    }
+    .cool-image{
+    /*    make image circle*/
+        border-radius: 50%;
+        overflow: hidden;
+        width: 300px;
+        height: 300px;
+
+    }
+
 
 
 </style>
