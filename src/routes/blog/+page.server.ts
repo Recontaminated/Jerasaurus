@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import { env } from '$env/dynamic/private';
 //    export async function load({ params }){
 //   const post = await getPostFromDatabase(params.slug);
 //
@@ -9,7 +10,7 @@ import type { PageServerLoad } from './$types';
 // }
 //write the commented function but correctly typed with pageServerLoad
 export const load: PageServerLoad = async ({ params }) => {
-	const posts = await fetch('http://127.0.0.1:1337/api/posts');
+	const posts = await fetch(`${env.STRAPI_HOST}/api/posts`);
 	const json = await posts.json();
 	return { json };
 };
