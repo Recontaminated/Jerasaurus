@@ -13,6 +13,7 @@
 
         Prism.highlightAll();
     })
+
 </script>
 
 <svelte:head>
@@ -26,7 +27,9 @@
 <div class="content-container">
     <h1 class="blog-title">{data.json.data[0].attributes.title}</h1>
     <p id="pageDate">Updated: {(data.json.data[0].attributes.updatedAt).slice(0,10)} </p>
-    <img id="blog-art" src={env.PUBLIC_STRAPI_HOST + data.json.data[0].attributes.blogArt.data.attributes.url} alt="blog image">
+    {#if data.json.data[0].attributes.blogArt.data != null}
+        <img id="blog-art" src={env.PUBLIC_STRAPI_HOST + data.json.data[0].attributes.blogArt.data?.attributes.url} alt="blog image">
+    {/if}
     <div style="padding-bottom: 2rem">{@html data.content}</div>
     <hr style="border-top: 1px solid var(--fontColorBase);padding-bottom: 1rem ">
 </div>
