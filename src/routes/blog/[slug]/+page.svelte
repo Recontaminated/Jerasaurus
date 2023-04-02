@@ -4,6 +4,7 @@
     import {onMount} from "svelte";
     import Prism from 'prismjs';
 
+    import { env } from '$env/dynamic/public';
     export let data = {
         content: ''
     };
@@ -24,14 +25,25 @@
 <Header/>
 <div class="content-container">
     <h1 class="blog-title">{data.json.data[0].attributes.title}</h1>
+    <p id="pageDate">Updated: {(data.json.data[0].attributes.updatedAt).slice(0,10)} </p>
+    <img id="blog-art" src={env.PUBLIC_STRAPI_HOST + data.json.data[0].attributes.blogArt.data.attributes.url} alt="blog image">
     <div style="padding-bottom: 2rem">{@html data.content}</div>
     <hr style="border-top: 1px solid var(--fontColorBase);padding-bottom: 1rem ">
-    <p>Last Updated {(data.json.data[0].attributes.updatedAt).slice(0,10)} </p>
 </div>
 <style lang="scss">
 
     /*@use "$lib/styles/blogStyles.scss"*/
     .content-container {
+      --content-width: 900px;
+      #blog-art {
+        width: 100%;
+        height: auto;
+        padding-bottom: 1rem;
+        //center it
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
     :global(h1) {
         font-size: 2.5rem;
@@ -39,13 +51,19 @@
         color: var(--fontColorBase);
         margin-bottom: 1rem;
     }
-
+    #pageDate {
+      font-family: apple-system, Inter, sans-serif, sans-serif;
+      text-align: center;
+        font-size: 0.8rem;
+        font-weight: 200;
+        color: var(--fontColorBase);
+    }
     .blog-title {
+      text-align: center;
         font-family: Inter, sans-serif;
         font-size: 3rem;
-        font-weight: 700;
-        padding-bottom: 1rem;
-        padding-top: 2rem;
+        font-weight: 600;
+        margin-bottom: 0;
     }
 
     :global(body) {
@@ -56,7 +74,7 @@
         font-family: Arial, Inter, sans-serif;
         font-size: 2rem;
         font-weight: 700;
-        padding-bottom: 1rem;
+        padding-bottom: 0.7rem;
 
     }
 
@@ -64,11 +82,11 @@
         font-family: Arial, Inter, sans-serif;
         font-size: 2rem;
         font-weight: 600;
-        padding-bottom: 1rem;
+        padding-bottom: 0.7rem;
     }
 
     :global(p) {
-        padding-bottom: 1rem;
+        padding-bottom: 0.7rem;
 
     }
 
