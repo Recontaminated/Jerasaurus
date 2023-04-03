@@ -16,7 +16,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
-
+    env:
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
     steps:
       - name: "Checkout branch"
         uses: actions/checkout@master
@@ -28,29 +29,35 @@ jobs:
         run: |
           npm ci
           npm run build
-      - name: Prep
+      - name: Setup SSH
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_KEY }}"
 
-      - name: Deploy
+      - name: Deploy (create)
         run: |
           mkdir Jerasaurus
           mv build Jerasaurus
           mv package-lock.json Jerasaurus
           mv package.json Jerasaurus
           zip -r Jerasaurus.zip Jerasaurus
+
+      - name: Deploy (upload)
+        run: |
           scp -o StrictHostKeyChecking=no -o LogLevel=quiet Jerasaurus.zip ${{ secrets.SSH_STRING }}:~/Jerasaurus.zip
-          
-          ssh -o StrictHostKeyChecking=no -o LogLevel=quiet ${{ secrets.SSH_STRING }} "pm2 stop node > /dev/null && rm -r Jerasaurus && unzip Jerasaurus.zip  && rm Jerasaurus.zip && cd Jerasaurus && npm ci && pm2 restart node > /dev/null"
+      - name: Deploy (stop + unzip)
+        run: |
+          ssh -o StrictHostKeyChecking=no -o LogLevel=quiet ${{ secrets.SSH_STRING }} "pm2 stop node > /dev/null && rm -r Jerasaurus && unzip Jerasaurus.zip  && rm Jerasaurus.zip"
+      - name: Deploy (install + start)
+        run: |
+          ssh -o StrictHostKeyChecking=no -o LogLevel=quiet ${{ secrets.SSH_STRING }} "cd Jerasaurus && npm ci && pm2 restart node > /dev/null"
   lighthouse:
     needs: build
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: "Warm up CDN"
         run: "curl --compressed --location jerasaurus.duckarmada.com > /dev/null"
-
       - uses: actions/checkout@v3
       - name: Audit URLs using Lighthouse
         id: lighthouse
@@ -64,5 +71,8 @@ jobs:
           temporaryPublicStorage: true # upload lighthouse report to the temporary storage
       - name: Send notification to discord webhook
         run: |
-            outputString=$(echo ${{ steps.lighthouse.outputs.links }} | jq -r 'to_entries | map("\(.key): \(.value|tostring)") | .[]') 
-            curl -X POST -H "Content-Type: application/json" -d "{\"content\": \"${outputString}\"}" ${{ secrets.DISCORD_WEBHOOK }}
+          curl -X POST -H "Content-Type: application/json"  --trace -v -d "${{steps.lighthouse.outputs.links}}" ${{ secrets.WEBHOOK }}
+#          outputString=$(echo '${{ steps.lighthouse.outputs.links }}' | jq -r 'to_entries | map("\(.key): \(.value|tostring)") | .[]')
+#          requestBody=$(echo "{\"content\": \"$outputString\"}")
+
+          
