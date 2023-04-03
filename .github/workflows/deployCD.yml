@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Warm up CDN"
-        run: "curl --compressed --location jerasaurus.duckarmada.com"
+        run: "curl --compressed --location jerasaurus.duckarmada.com > /dev/null"
 
       - uses: actions/checkout@v3
       - name: Audit URLs using Lighthouse
@@ -64,6 +64,5 @@ jobs:
           temporaryPublicStorage: true # upload lighthouse report to the temporary storage
       - name: Send notification to discord webhook
         run: |
-            
-            outputString=$(jq -r 'to_entries | map("\(.key): \(.value|tostring)") | .[]' "${{ steps.lighthouse.outputs.links }}")
+            outputString=$(echo ${{ steps.lighthouse.outputs.links }} | jq -r 'to_entries | map("\(.key): \(.value|tostring)") | .[]') 
             curl -X POST -H "Content-Type: application/json" -d "{\"content\": \"${outputString}\"}" ${{ secrets.DISCORD_WEBHOOK }}
