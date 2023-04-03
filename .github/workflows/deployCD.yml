@@ -71,7 +71,7 @@ jobs:
           temporaryPublicStorage: true # upload lighthouse report to the temporary storage
       - name: Send notification to discord webhook
         run: |
-          curl -X POST -H "Content-Type: application/json"  --trace -v -d "${{steps.lighthouse.outputs.links}}" ${{ secrets.WEBHOOK }}
+          curl -X POST -H "Content-Type: application/json"  --trace -v -d '${{steps.lighthouse.outputs.links}}' ${{ secrets.WEBHOOK }}
 #          outputString=$(echo '${{ steps.lighthouse.outputs.links }}' | jq -r 'to_entries | map("\(.key): \(.value|tostring)") | .[]')
 #          requestBody=$(echo "{\"content\": \"$outputString\"}")
 
