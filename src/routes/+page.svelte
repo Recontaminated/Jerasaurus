@@ -11,7 +11,7 @@
             <header class="hero-index">
                 <h1 class="hero">Hey, I'm Jeremy!</h1>
                 <p class="hero-description">
-                    Welcome to my digital archive 🗃️
+                    Enjoy your stay here ️🌱
                     <br><br>
                     I'm a software developer who sometimes plays drums. I work on open source projects to try and automate boring things.  I like birds, space, and Blink-182.
 
