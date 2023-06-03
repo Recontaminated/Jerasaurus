@@ -42,6 +42,7 @@
 
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
     .brand {
         font-family:Inter, Roboto, sans-serif;
         font-weight: 700;

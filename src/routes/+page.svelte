@@ -26,6 +26,8 @@
 </div>
 
 <style>
+    /*@import url('https://fonts.googleapis.com/css?family=Inter');*/
+
     .main-content{
         padding-top: 4rem;
     }
@@ -45,10 +47,9 @@
     }
 
 
-
 </style>
-<svelte:head>
-<!--   <link rel="preconnect" href="https://fonts.googleapis.com">-->
-<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
-    <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
-</svelte:head>
+<!--<svelte:head>-->
+<!--&lt;!&ndash;   <link rel="preconnect" href="https://fonts.googleapis.com">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>&ndash;&gt;-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">-->
+<!--</svelte:head>-->
