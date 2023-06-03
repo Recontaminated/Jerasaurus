@@ -13,7 +13,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
     const json = await res.json();
 
-
     if (json.data.length === 0) {
         throw  error(404, 'Not found')
 
