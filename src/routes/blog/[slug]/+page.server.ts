@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ params }) => {
     // // Now, we'll fetch the blog post from Strapi
     const res = await fetch(`${env.STRAPI_HOST}/api/posts?filters[slug][$eq]=${params.slug}&populate=*`);
 
-    const json = await res.json();
+    let json = await res.json();
 
     if (json.data.length === 0) {
         throw  error(404, 'Not found')
@@ -19,8 +19,26 @@ export const load: PageServerLoad = async ({ params }) => {
     }
     const compiled = converter.makeHtml(json.data[0].attributes.content)
 
+    json = json.data[0];
+    let date;
+    if (json.attributes?.updated) {
+        date = new Date(json.attributes.updated);
+    }
+    else {
+        date = new Date(json.attributes.updatedAt);
+    }
+
+
+
+
     return {
-        json,
+        json: {
+            updated: `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()}`,
+            blogArt: json.attributes?.blogArt,
+            title: json.attributes.title,
+            description: json.attributes.description,
+
+        },
         content: compiled
     }
 }

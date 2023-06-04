@@ -19,9 +19,9 @@
 
     let artAR;
    // this is so dumb
-    if (data.json.data[0].attributes.blogArt.data != null)
+    if (data.json.blogArt.data != null)
     {
-       artAR = data.json.data[0].attributes.blogArt.data?.attributes.width / data.json.data[0].attributes.blogArt.data?.attributes.height *100;
+       artAR = data.json.blogArt.data?.attributes.width / data.json.blogArt.data?.attributes.height *100;
     }
 
 </script>
@@ -35,14 +35,14 @@
 
 <Header/>
 <div class="content-container">
-    <h1 class="blog-title">{data.json.data[0].attributes.title}</h1>
-    <p id="pageDate">Updated: {(data.json.data[0].attributes.updatedAt).slice(0,10)} </p>
-    {#if data.json.data[0].attributes.blogArt.data != null}
+    <h1 class="blog-title">{data.json.title}</h1>
+    <p id="pageDate">Updated: {(data.json.updated)} </p>
+    {#if data.json.blogArt.data != null}
         <div
                 class="dynamic-aspect-ratio-box"
                 style={`padding-bottom: ${artAR}%`}
         >
-        <img id="blog-art" src={env.PUBLIC_STRAPI_HOST + data.json.data[0].attributes.blogArt.data?.attributes.url} alt="blog image">
+        <img id="blog-art" src={env.PUBLIC_STRAPI_HOST + data.json.blogArt.data?.attributes.url} alt="blog image">
         </div>
     {/if}
     <div style="padding-bottom: 2rem">{@html data.content}</div>

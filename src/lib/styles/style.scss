@@ -9,6 +9,7 @@
 	--background-color: #181818;
 	--gray1: #e6e6e6;
 	--fontColorBase: var(--gray1);
+	--organizationGray: #2c2c2c
 }
 body {
 	margin: 0;
@@ -63,4 +64,12 @@ h1{
 }
 nav{
 	font-family: Inter, sans-serif;
+}
+
+h3 {
+	color: white;
+	font-family: -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+	font-size: 1.5rem;
+	font-weight: 500;
+	margin-bottom: 1.25rem;
 }
