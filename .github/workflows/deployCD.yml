@@ -56,9 +56,19 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     steps:
-      - name: "Warm up CDN"
+      - name: "Warm up CDN (1/2)"
         run: "curl --compressed --location jerasaurus.duckarmada.com > /dev/null"
       - uses: actions/checkout@v3
+      - name: Warmup CDN (2/2)
+        id: warmup
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            https://jerasaurus.duckarmada.com/
+            https://jerasaurus.duckarmada.com/blog
+            https://jerasaurus.duckarmada.com/blog/te
+          uploadArtifacts: false # save results as an action artifacts
+          temporaryPublicStorage: false # upload lighthouse report to the temporary storage
       - name: Audit URLs using Lighthouse
         id: lighthouse
         uses: treosh/lighthouse-ci-action@v9
