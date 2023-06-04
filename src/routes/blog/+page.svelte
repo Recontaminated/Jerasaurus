@@ -6,27 +6,80 @@
 	//parse data.json
 	let posts = data.json;
 
+
 </script>
 
 <Header></Header>
 <div class="my-4">
 	<h1 class="text-center text-3xl font-bold">My wonderful blog</h1>
-<!--	<p>{JSON.stringify(posts)}</p>-->
 </div>
-<div class="container mx-auto mt-4">
-	{#each posts as post}
-		<a href="/blog/{post.attributes.slug}">
-			<div class="bg-white shadow-md rounded-lg p-4 my-4 hover:bg-gray-200">
-				<h2 class="text-black text-2xl font-bold">{post.attributes.title}</h2>
-				<p class="text-black">{post.attributes.description}</p>
-			</div>
-		</a>
-		<!--        <div-->
-		<!--                class="hover:bg-gray-200 cursor-pointer px-6 py-2 border-b border-gray-500"-->
-		<!--                on:click={() => goto('/blog/' + post.id)}-->
-		<!--        >-->
-		<!--            <h4 class="font-bold">{post.attributes.Title}</h4>-->
-		<!--            <p class="mt-2 text-gray-800">{post.attributes.description}</p>-->
-		<!--        </div>-->
-	{/each}
+<div class="content-container mx-auto mt-4">
+	<div class="split">
+		<div class="articles">
+			{#each posts as post}
+				<a class="post" href="/blog/{post.attributes.slug}">
+					<h3 class="post-title">{post.attributes.title}</h3>
+
+
+					<p class="date"> {post.attributes.shortenedDate}</p>
+				</a>
+
+
+			{/each}
+		</div>
+		<div class="sidebar">
+			<aside>
+				<div class="card post-tags">
+					<h3>Tags: <br><br>(none yet :))</h3>
+				</div>
+			</aside>
+		</div>
+	</div>
+
 </div>
+<style>
+
+	a.post:hover .post-title {
+
+		/*background: var(--organizationGray);*/
+
+		text-decoration: underline;
+	}
+	.date{
+		font-family: Menlo,monospace;
+		font-weight: 500;
+		font-size: 18px;
+		color: #4edd8b;
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: auto;
+		display: inline;
+	}
+	a.post {
+		background: transparent;
+		border-bottom: 1px solid var(--organizationGray);
+		display: flex;
+		gap: 1rem;
+		padding: 0.6rem 0;
+		text-decoration: none;
+	}
+	a.post h3 {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--gray1);
+
+	}
+	.card {
+		background: #1f1f1f;
+		border: 1px solid var(--organizationGray);
+		border-radius: 6px;
+		margin: 1rem 0;
+		padding: 1.5rem;
+	}
+
+		.split	 {
+			display: grid;
+			gap: 6rem;
+			grid-template-columns: auto 300px;
+		}
+</style>
