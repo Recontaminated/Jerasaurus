@@ -11,6 +11,17 @@ import { env } from '$env/dynamic/private';
 //write the commented function but correctly typed with pageServerLoad
 export const load: PageServerLoad = async ({ params }) => {
 	const posts = await fetch(`${env.STRAPI_HOST}/api/posts`);
-	const json = await posts.json();
+	let json = await posts.json();
+
+	json = json.data.map((post) => {
+		return {
+			attributes: {
+				slug: post.attributes.slug,
+				title: post.attributes.title,
+				description: post.attributes.description,
+			}
+		}
+	});
+	console.log(json);
 	return { json };
 };
