@@ -5,7 +5,6 @@
 	export let data;
 	//parse data.json
 	let posts = data.json;
-	posts = posts.data;
 
 </script>
 
