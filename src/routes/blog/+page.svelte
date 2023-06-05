@@ -38,7 +38,6 @@
 
 </div>
 <style>
-
 	a.post:hover .post-title {
 
 		/*background: var(--organizationGray);*/
@@ -67,7 +66,6 @@
 		font-size: 1.5rem;
 		font-weight: 600;
 		color: var(--gray1);
-		margin-bottom: 0;
 
 	}
 	.card {
@@ -83,4 +81,8 @@
 			gap: 6rem;
 			grid-template-columns: auto 300px;
 		}
+
+
+
+
 </style>
