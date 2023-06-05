@@ -1,5 +1,4 @@
 <script>
-	import { goto } from '$app/navigation';
 	import Header from "$lib/components/Header.svelte";
 	import '$lib/styles/style.scss';
 	export let data;
@@ -66,6 +65,7 @@
 		font-size: 1.5rem;
 		font-weight: 600;
 		color: var(--gray1);
+		margin-bottom: 0;
 
 	}
 	.card {
