@@ -1,5 +1,4 @@
 <script lang="ts">
-    import "$lib/styles/style.scss"
     import Header from "$lib/components/Header.svelte";
     import {onMount} from "svelte";
     import Prism from 'prismjs';
@@ -33,7 +32,7 @@
 </svelte:head>
 
 
-<Header/>
+    <Header/>
 <div class="content-container">
     <h1 class="blog-title">{data.json.title}</h1>
     <p id="pageDate">Updated: {(data.json.updated)} </p>
@@ -63,6 +62,7 @@
     height: 100%;
     object-fit: cover; // Use 'cover' or 'contain' depending on your design needs
   }
+
     /*@use "$lib/styles/blogStyles.scss"*/
     .content-container {
       --content-width: 900px;
@@ -76,7 +76,7 @@
         margin-right: auto;
       }
 
-    :global(h1) {
+    h1 {
         font-size: 2.5rem;
         font-weight: 600;
         color: var(--fontColorBase);
@@ -96,12 +96,12 @@
         font-weight: 600;
         margin-bottom: 0;
     }
-
+    // we have to do this or else styles dont apply to the content
     :global(body) {
         color: var(--fontColorBase);
     }
 
-    :global(h1) {
+     :global(h1) {
         font-family: Arial, Inter, sans-serif;
         font-size: 2rem;
         font-weight: 700;
@@ -121,5 +121,25 @@
 
     }
 
+      :global(strong) {
+        background-color: rgb(255, 178, 62);
+        background-image: linear-gradient(90deg, #c74677, #d65372, #e2616e, #ec716a, #f38168, #f99267, #fda468, #ffb56b);
+        background-size: 100%;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      :global(a) {
+        color: var(--accentColor);
+
+      }
+      :global(a:hover){
+        border-bottom: 1px solid var(--accentColor);
+      }
+      :global(img){
+       margin-left: auto;
+         margin-right: auto;
+        max-width: var(--content-width);
+      }
     }
+
 </style>

@@ -9,7 +9,8 @@
 	--background-color: #181818;
 	--gray1: #e6e6e6;
 	--fontColorBase: var(--gray1);
-	--organizationGray: #2c2c2c
+	--organizationGray: #2c2c2c;
+	--accentColor: #6083ff;
 }
 body {
 	margin: 0;
@@ -72,4 +73,15 @@ h3 {
 	font-size: 1.5rem;
 	font-weight: 500;
 	margin-bottom: 1.25rem;
+}
+
+p {
+	font-family: Inter, sans-serif;
+	font-size: 1rem;
+	line-height: 1.6;
+	margin-bottom: 1.5rem;
+	margin-top: 0px;
+	-webkit-font-smoothing: antialiased;
+	color: var(--gray1);
+
 }

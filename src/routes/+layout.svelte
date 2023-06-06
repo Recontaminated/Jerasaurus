@@ -10,7 +10,12 @@
 <main>
 	<slot />
 </main>
-
+<svelte:head>
+<!--	set title-->
+	<title>Jerasaurus</title>
+<!--	set meta tags-->
+	<meta name="description" content="A personal website for Jeremy">
+</svelte:head>
 <style>
 
 </style>
