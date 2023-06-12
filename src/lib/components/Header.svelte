@@ -7,7 +7,7 @@
                 <a href="/" class="brand">Jerasaurus</a>
                 <nav>
                     <ul>
-                        <li><a href="/about" class="effect-3">About</a></li>
+                        <!-- <li><a href="/about" class="effect-3">About</a></li> -->
 
                         <li><a href="/blog" class="effect-3">Blog</a></li>
                         <li><a href="/projects" class="effect-3">Projects</a></li>
