@@ -1,6 +1,5 @@
 <script>
 	import Header from "$lib/components/Header.svelte";
-	import '$lib/styles/style.scss';
 	export let data;
 	//parse data.json
 	let posts = data.json;
