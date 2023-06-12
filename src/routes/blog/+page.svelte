@@ -9,7 +9,7 @@
 
 <Header></Header>
 <div class="my-4">
-	<h1 class="text-center text-3xl font-bold">My wonderful blog</h1>
+	<h1 class="text-center text-3xl font-bold">Blog Posts</h1>
 </div>
 <div class="content-container mx-auto mt-4">
 	<div class="split">
