@@ -28,6 +28,7 @@
 <style>
     /*@import url('https://fonts.googleapis.com/css?family=Inter');*/
 
+
     .main-content{
         padding-top: 4rem;
     }
@@ -44,6 +45,23 @@
         width: 300px;
         height: 300px;
 
+    }
+    @media (max-width: 900px) {
+        .hero-wrapper{
+            grid-template-columns: 1fr;
+            gap: 1rem
+
+        }
+        .cool-image{
+            max-width: 300px;
+            width: 100%;
+            height: 100%;
+
+        }
+    /*    align image center*/
+        .hero-wrapper{
+            justify-items: center;
+        }
     }
 
 
