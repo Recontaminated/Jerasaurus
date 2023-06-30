@@ -17,7 +17,7 @@
     <a>If you wish to use secure messaging, here is my PGP key</a>
     <br>
 
-    <a href= "https://images.duckarmada.com/JyG4kKM0LPK7/direct?download=yes" class="save-link content-center">My PGP key</a>
+    <a href= "https://images.duckarmada.com/BuKVX1DFqrPv/direct?download=yes" class="save-link content-center">My PGP key</a>
 </div>
 
 <style>
@@ -105,4 +105,4 @@
         border-radius: 10px;
     }
 
-</style>
+</style>et
