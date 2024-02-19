@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			}
 		}
 	}).sort(function(a,b){
-		return a.date - b.date
+		return b.date - a.date
 	});
 	return { json };
 };
