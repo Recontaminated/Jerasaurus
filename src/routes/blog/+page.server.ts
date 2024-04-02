@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			date = new Date(post.attributes.updatedAt);
 			shortenedDate = `${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 		}
-
+	console.log(date)
 		return {
 			attributes: {
 				slug: post.attributes.slug,
@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			}
 		}
 	}).sort(function(a,b){
-		return a.date - b.date
+		return new Date( b.attributes.updatedAt) - new Date(a.attributes.updatedAt)
 	});
 	return { json };
 };
