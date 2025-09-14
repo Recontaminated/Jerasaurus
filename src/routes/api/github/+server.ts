@@ -52,13 +52,13 @@ export const GET: RequestHandler = async () => {
 
 		const contributions = data.data?.user?.contributionsCollection;
 
-		// Total commits including private repos
+		// Use total contributions instead of just commits
+		const totalContributions = contributions?.contributionCalendar?.totalContributions || 0;
 		const totalCommits = contributions?.totalCommitContributions || 0;
-		const restrictedCommits = contributions?.restrictedContributionsCount || 0;
 
 		return json({
 			totalCommits: totalCommits,
-			totalContributions: contributions?.contributionCalendar?.totalContributions || 0,
+			totalContributions: totalContributions,
 			year: currentYear
 		});
 	} catch (error) {

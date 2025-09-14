@@ -26,11 +26,12 @@
 			id: 'github',
 			title: 'Github Activity',
 			description: 'Contributions this year',
-			value: '3,827',
-			subvalue: 'contributions',
+			value: 'Loading...',
+			subvalue: '',
 			gradient: 'from-purple-600 to-pink-600',
 			accentColor: 'rgb(168, 85, 247)',
 			icon: 'github',
+			loading: true,
 			size: 'wide' as const
 		},
 		{
@@ -58,39 +59,18 @@
 			size: 'medium' as const
 		},
 		{
-			id: 'typing',
-			title: 'Typing Speed',
-			description: 'Personal record',
-			value: '94.4',
-			subvalue: 'WPM',
-			gradient: 'from-orange-600 to-red-600',
-			accentColor: 'rgb(251, 146, 60)',
-			icon: 'keyboard',
-			size: 'small' as const
-		},
-		{
-			id: 'project',
-			title: 'Latest Project',
-			description: 'Currently building',
-			value: 'Jerasaurus',
-			subvalue: 'Portfolio site',
-			gradient: 'from-indigo-600 to-purple-600',
-			accentColor: 'rgb(99, 102, 241)',
-			icon: 'rocket',
-			size: 'tall' as const
-		},
-		{
 			id: 'streak',
 			title: 'Code Streak',
-			description: 'Days in a row',
-			value: '7',
-			subvalue: 'days',
+			description: 'Current streak',
+			value: 'Loading...',
+			subvalue: '',
 			gradient: 'from-pink-600 to-rose-600',
 			accentColor: 'rgb(236, 72, 153)',
 			icon: 'fire',
+			loading: true,
 			size: 'medium' as const
 		},
-		{ 
+		{
 			id: 'tech',
 			title: 'Tech Stack',
 			description: 'Main technologies',
@@ -120,15 +100,35 @@
 			if (githubResponse.status === 'fulfilled' && githubResponse.value.ok) {
 				const githubData = await githubResponse.value.json();
 
-				// Update GitHub activity card with real commit count
+				// Update GitHub activity card with total contributions
 				const githubCardIndex = reactiveCards.findIndex(c => c.id === 'github');
-				if (githubCardIndex !== -1 && githubData.totalCommits !== undefined) {
-					reactiveCards[githubCardIndex].value = githubData.totalCommits.toLocaleString();
-					reactiveCards[githubCardIndex].subvalue = `commits in ${githubData.year}`;
+				if (githubCardIndex !== -1) {
+					reactiveCards[githubCardIndex].loading = false;
+					if (githubData.totalContributions !== undefined) {
+						reactiveCards[githubCardIndex].value = githubData.totalContributions.toLocaleString();
+						reactiveCards[githubCardIndex].subvalue = `contributions in ${githubData.year}`;
+					} else {
+						reactiveCards[githubCardIndex].value = 'N/A';
+						reactiveCards[githubCardIndex].subvalue = 'Unable to load';
+					}
+				}
+			} else {
+				// Handle error case
+				const githubCardIndex = reactiveCards.findIndex(c => c.id === 'github');
+				if (githubCardIndex !== -1) {
+					reactiveCards[githubCardIndex].loading = false;
+					reactiveCards[githubCardIndex].value = 'N/A';
+					reactiveCards[githubCardIndex].subvalue = 'Unable to load';
 				}
 			}
 		} catch (error) {
 			console.error('Failed to process GitHub data:', error);
+			const githubCardIndex = reactiveCards.findIndex(c => c.id === 'github');
+			if (githubCardIndex !== -1) {
+				reactiveCards[githubCardIndex].loading = false;
+				reactiveCards[githubCardIndex].value = 'N/A';
+				reactiveCards[githubCardIndex].subvalue = 'Unable to load';
+			}
 		}
 
 		// Process WakaTime stats
@@ -181,10 +181,43 @@
 						reactiveCards[langCardIndex].subvalue = `${topLang.percent.toFixed(1)}% of time`;
 					}
 
-					// Update daily average on streak card
+					// Update streak card with calculated streak
 					const streakCardIndex = reactiveCards.findIndex(c => c.id === 'streak');
-					if (streakCardIndex !== -1 && apiData.human_readable_daily_average) {
-						reactiveCards[streakCardIndex].description = `${apiData.human_readable_daily_average} avg/day`;
+					if (streakCardIndex !== -1) {
+						reactiveCards[streakCardIndex].loading = false;
+
+						// Debug: log the data structure
+						console.log('WakaTime days data:', apiData.days);
+						console.log('Days minus holidays:', apiData.days_minus_holidays);
+
+						// Try different data fields
+						if (apiData.days && Array.isArray(apiData.days) && apiData.days.length > 0) {
+							// Count consecutive days with activity from most recent
+							let streak = 0;
+							for (let i = apiData.days.length - 1; i >= 0; i--) {
+								const dayTotal = apiData.days[i].grand_total?.total_seconds || apiData.days[i].total || 0;
+								console.log(`Day ${i}: ${apiData.days[i].date}, total: ${dayTotal}`);
+								if (dayTotal > 0) {
+									streak++;
+								} else {
+									break;
+								}
+							}
+							reactiveCards[streakCardIndex].value = streak.toString();
+							reactiveCards[streakCardIndex].subvalue = `day${streak !== 1 ? 's' : ''} streak`;
+						} else if (apiData.days_including_holidays && apiData.days_including_holidays > 0) {
+							// Use days including holidays as fallback
+							reactiveCards[streakCardIndex].value = apiData.days_including_holidays.toString();
+							reactiveCards[streakCardIndex].subvalue = `day${apiData.days_including_holidays !== 1 ? 's' : ''} active`;
+						} else {
+							// Last fallback - just show if we coded today
+							reactiveCards[streakCardIndex].value = apiData.is_coding_activity_visible ? '1' : '0';
+							reactiveCards[streakCardIndex].subvalue = 'days';
+						}
+
+						if (apiData.human_readable_daily_average) {
+							reactiveCards[streakCardIndex].description = `${apiData.human_readable_daily_average} avg/day`;
+						}
 					}
 				}
 			}
