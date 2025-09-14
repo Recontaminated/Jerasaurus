@@ -76,7 +76,7 @@ jobs:
           urls: |
             https://jerasaurus.duckarmada.com/
             https://jerasaurus.duckarmada.com/blog
-            https://jerasaurus.duckarmada.com/blog/te
+            https://jerasaurus.duckarmada.com/blog/hello-world
           uploadArtifacts: true # save results as an action artifacts
           temporaryPublicStorage: true # upload lighthouse report to the temporary storage
       - name: Send notification to discord webhook
