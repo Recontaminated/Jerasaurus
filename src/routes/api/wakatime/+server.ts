@@ -3,10 +3,13 @@ import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
 
 // Store the API token server-side only
-const WAKATIME_API_TOKEN = env.WAKATIME_API_TOKEN || '7f886cfc-ce00-4bf4-a6c6-a485f44cec42';
+const WAKATIME_API_TOKEN = env.WAKATIME_API_TOKEN;
 
 export const GET: RequestHandler = async () => {
 	try {
+		if (!WAKATIME_API_TOKEN) {
+			throw new Error('WakaTime token not configured');
+		}
 		// Encode the API key as Base64 for Basic auth
 		const base64Token = Buffer.from(WAKATIME_API_TOKEN).toString('base64');
 
