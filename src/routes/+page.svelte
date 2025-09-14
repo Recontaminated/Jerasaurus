@@ -1,6 +1,7 @@
 <script lang="ts">
     import OverviewCards from '$lib/components/OverviewCards.svelte';
     import AboutSection from '$lib/components/AboutSection.svelte';
+    import TechStack from '$lib/components/TechStack.svelte';
     import Reveal from '$lib/components/Reveal.svelte';
     import ScrollReveal from '$lib/components/ScrollReveal.svelte';
     const socials = [
@@ -72,6 +73,11 @@
     <OverviewCards />
 </div>
 
+<!-- Tech Stack section -->
+<div id="skills">
+    <TechStack />
+</div>
+
 <!-- anchor sections -->
 <section id="projects" class="mx-auto mt-24 max-w-6xl px-6">
     <ScrollReveal delay={100}>
@@ -79,14 +85,6 @@
         <p class="mt-3 text-white/70">Coming soon.</p>
         <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
         <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
-    </ScrollReveal>
-</section>
-
-<section id="skills" class="mx-auto mt-24 max-w-6xl px-6">
-    <ScrollReveal delay={150}>
-        <h2 class="text-2xl font-semibold">Skills</h2>
-        <p class="mt-3 text-white/70">TypeScript, SvelteKit, Node, Embedded C/C++...</p>
-        <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
     </ScrollReveal>
 </section>
 

@@ -12,12 +12,12 @@
 		<div class="text-center space-y-6">
 			<!-- Small label -->
 			<div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur">
-				<span class="text-sm text-white/60">Philosophy</span>
+				<span class="text-sm text-white/60">A little about me...</span>
 			</div>
 
 			<!-- Main text -->
 			<h2 class="text-3xl sm:text-4xl font-bold text-white/90">
-				Creating a connected world
+				I love building things
 			</h2>
 
 			<div class="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-white/70">

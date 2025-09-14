@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import ScrollReveal from '$lib/components/ScrollReveal.svelte';
+	import LanguageUsageCard from '$lib/components/LanguageUsageCard.svelte';
 
 	type Card = {
 		id: string;
@@ -69,17 +70,6 @@
 			icon: 'fire',
 			loading: true,
 			size: 'medium' as const
-		},
-		{
-			id: 'tech',
-			title: 'Tech Stack',
-			description: 'Main technologies',
-			value: 'TS',
-			subvalue: 'SvelteKit, Node',
-			gradient: 'from-teal-600 to-blue-600',
-			accentColor: 'rgb(20, 184, 166)',
-			icon: 'stack',
-			size: 'wide' as const
 		}
 	] }: Props = $props();
 
@@ -87,6 +77,9 @@
 	let reactiveCards = $state(cards);
 	let lastUpdated = $state<string>('');
 	let dataRange = $state<string>('');
+	let languageData = $state<any[]>([]);
+	let totalCodingTime = $state<string>('');
+	let languagesLoading = $state(true);
 
 	onMount(async () => {
 		// Fetch all data in parallel
@@ -169,7 +162,15 @@
 							const parts = apiData.human_readable_total.split(' ');
 							reactiveCards[codingCardIndex].value = parts.slice(0, -1).join(' ');
 							reactiveCards[codingCardIndex].subvalue = 'this week';
+							// Store total time for language card
+							totalCodingTime = apiData.human_readable_total;
 						}
+					}
+
+					// Store language data for LanguageUsageCard
+					if (apiData.languages && apiData.languages.length > 0) {
+						languageData = apiData.languages;
+						languagesLoading = false;
 					}
 
 					// Update top language card
@@ -220,9 +221,12 @@
 						}
 					}
 				}
+			} else {
+				languagesLoading = false;
 			}
 		} catch (error) {
 			console.error('Failed to process WakaTime data:', error);
+			languagesLoading = false;
 			reactiveCards.forEach((card, index) => {
 				if (card.loading) {
 					reactiveCards[index].loading = false;
@@ -306,7 +310,7 @@
 	<ScrollReveal delay={50}>
 		<!-- Section header -->
 		<div class="mb-12 text-center">
-			<h2 class="text-3xl font-bold text-white/90 mb-3">Some stats about me</h2>
+			<h2 class="text-3xl font-bold text-white/90 mb-3">Some live stats</h2>
 			<p class="text-white/60 text-lg">
 				A real-time glimpse into my coding journey and tech stack
 			</p>
@@ -376,6 +380,15 @@
 				</div>
 			</div>
 		{/each}
+		</div>
+
+		<!-- Language Usage Card -->
+		<div class="mt-6">
+			<LanguageUsageCard
+				languages={languageData}
+				totalTime={totalCodingTime}
+				loading={languagesLoading}
+			/>
 		</div>
 	</ScrollReveal>
 </section>

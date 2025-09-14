@@ -11,8 +11,8 @@
 
 	let { links = [
 		{ href: '/', label: 'Home' },
-		{ href: '#projects', label: 'Projects' },
 		{ href: '#skills', label: 'Skills' },
+		{ href: '#projects', label: 'Projects' },
 		{ href: '#contact', label: 'Contact' },
 		{ href: '/blog', label: 'Blog' }
 	] }: Props = $props();
@@ -66,8 +66,8 @@
 			// Determine active section based on scroll position
 			const sections = [
 				{ id: 'home', offset: 0 },
-				{ id: 'projects', offset: 0 },
 				{ id: 'skills', offset: 0 },
+				{ id: 'projects', offset: 0 },
 				{ id: 'contact', offset: 0 }
 			];
 
