@@ -25,7 +25,7 @@
 
 	// Force reactivity
 	run(() => {
-		activeSection, console.log('Reactive activeSection:', activeSection);
+		activeSection;
 	});
 
 	function isActive(href: string): boolean {
@@ -59,7 +59,6 @@
 	onMount(() => {
 		const handleScroll = () => {
 			scrollY = window.scrollY;
-			console.log('Current scrollY:', scrollY);
 
 			// Nav appearance changes after scrolling
 			isScrolled = scrollY > window.innerHeight / 2;
@@ -78,7 +77,6 @@
 				if (element) {
 					// Switch when section is about to enter viewport (adjust this value to control when switching happens)
 					sections[i].offset = element.offsetTop - window.innerHeight * 0.4; // Switch when section is 40% from bottom of viewport
-					console.log(`Section ${sections[i].id} offset:`, sections[i].offset);
 				} else {
 					console.warn(`Element with id '${sections[i].id}' not found`);
 				}
@@ -90,13 +88,11 @@
 			for (let i = sections.length - 1; i >= 0; i--) {
 				if (scrollY >= sections[i].offset) {
 					current = sections[i].id;
-					console.log(`Active section determined: ${current} (scrollY ${scrollY} >= offset ${sections[i].offset})`);
 					break;
 				}
 			}
 
 			if (activeSection !== current) {
-				console.log(`Active section changed from '${activeSection}' to '${current}'`);
 				activeSection = current; // Trigger Svelte reactivity
 			}
 		};
