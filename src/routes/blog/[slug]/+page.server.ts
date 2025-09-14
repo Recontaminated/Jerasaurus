@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ params }) => {
     let json = await res.json();
 
     if (json.data.length === 0) {
-        throw  error(404, 'Not found')
+        error(404, 'Not found');
 
     }
     const compiled = converter.makeHtml(json.data[0].attributes.content)
