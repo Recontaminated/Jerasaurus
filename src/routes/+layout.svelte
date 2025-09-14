@@ -2,6 +2,8 @@
 	import '../app.css';
 	import { fly } from 'svelte/transition';
 	import Nav from '$lib/components/Nav.svelte';
+	import InteractiveBackground from '$lib/components/InteractiveBackground.svelte';
+	import { page } from '$app/stores';
 	let { data, children } = $props();
 </script>
 
@@ -40,6 +42,10 @@
 			filter: blur(80px);
 			transform: translateZ(0);
 		"></div>
+		<!-- Interactive overlay for landing page only -->
+		{#if $page.url.pathname === '/'}
+			<InteractiveBackground />
+		{/if}
 		<!-- bottom fade to black -->
 		<div class="absolute inset-x-0 bottom-0 h-[45vh] bg-gradient-to-b from-transparent to-neutral-950 z-[1]"></div>
 	</div>
