@@ -312,7 +312,7 @@
 			</p>
 			{#if lastUpdated}
 				<p class="text-white/40 text-sm mt-2">
-					Last updated {lastUpdated} • {dataRange || 'This week'}
+					Last updated {lastUpdated} 
 				</p>
 			{/if}
 		</div>
