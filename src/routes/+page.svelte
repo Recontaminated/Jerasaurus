@@ -1,6 +1,7 @@
 <script lang="ts">
     import OverviewCards from '$lib/components/OverviewCards.svelte';
     import Reveal from '$lib/components/Reveal.svelte';
+    import ScrollReveal from '$lib/components/ScrollReveal.svelte';
     const socials = [
         { href: 'https://github.com/recontaminated', label: 'GitHub', icon: 'github' },
         { href: 'https://x.com/', label: 'X', icon: 'x' },
@@ -63,20 +64,26 @@
 
 <!-- anchor sections -->
 <section id="projects" class="mx-auto mt-24 max-w-6xl px-6">
-    <h2 class="text-2xl font-semibold">Projects</h2>
-    <p class="mt-3 text-white/70">Coming soon.</p>
-    <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
-    <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
+    <ScrollReveal delay={100}>
+        <h2 class="text-2xl font-semibold">Projects</h2>
+        <p class="mt-3 text-white/70">Coming soon.</p>
+        <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
+        <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
+    </ScrollReveal>
 </section>
 
 <section id="skills" class="mx-auto mt-24 max-w-6xl px-6">
-    <h2 class="text-2xl font-semibold">Skills</h2>
-    <p class="mt-3 text-white/70">TypeScript, SvelteKit, Node, Embedded C/C++...</p>
-    <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
+    <ScrollReveal delay={150}>
+        <h2 class="text-2xl font-semibold">Skills</h2>
+        <p class="mt-3 text-white/70">TypeScript, SvelteKit, Node, Embedded C/C++...</p>
+        <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
+    </ScrollReveal>
 </section>
 
 <section id="contact" class="mx-auto mt-24 mb-24 max-w-6xl px-6">
-    <h2 class="text-2xl font-semibold">Contact</h2>
-    <p class="mt-3 text-white/70">Reach out at jeremy@example.com</p>
-    <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
+    <ScrollReveal delay={200}>
+        <h2 class="text-2xl font-semibold">Contact</h2>
+        <p class="mt-3 text-white/70">Reach out at jeremy@example.com</p>
+        <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
+    </ScrollReveal>
 </section>

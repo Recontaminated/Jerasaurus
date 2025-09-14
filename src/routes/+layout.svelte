@@ -5,7 +5,7 @@
 	export let data;
 </script>
 
-<div class="relative min-h-screen bg-neutral-950 text-neutral-100 antialiased overflow-hidden">
+<div class="relative min-h-screen bg-neutral-950 text-neutral-100 antialiased">
 	<!-- ambient gradient background -->
 	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 		<div class="absolute inset-0" style="
