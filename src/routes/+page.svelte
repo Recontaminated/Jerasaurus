@@ -1,14 +1,6 @@
 <script lang="ts">
     import OverviewCards from '$lib/components/OverviewCards.svelte';
-    import { onMount } from 'svelte';
-    let visible = false;
-    onMount(() => {
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                visible = true;
-            }, 0);
-        });
-    });
+    import Reveal from '$lib/components/Reveal.svelte';
     const socials = [
         { href: 'https://github.com/recontaminated', label: 'GitHub', icon: 'github' },
         { href: 'https://x.com/', label: 'X', icon: 'x' },
@@ -28,7 +20,7 @@
 
 <section class="relative mx-auto max-w-6xl px-6 py-28 sm:py-36">
     <div class="grid items-center gap-12 lg:grid-cols-2">
-        <div class={"will-change-transform transition-[opacity,transform,filter] duration-700 " + (visible ? "opacity-100 blur-0 translate-y-0" : "opacity-0 blur-sm translate-y-2")}>
+        <Reveal>
             <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur">
                 <span class="relative flex h-2.5 w-2.5">
                     <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
@@ -52,17 +44,39 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-6 w-6 animate-bounce" style="animation-delay: 5s"><path d="M12 5v14m0 0l-5-5m5 5l5-5"/></svg>
                 </a>
             </div>
-        </div>
+        </Reveal>
 
-        <div class={"flex justify-center lg:justify-end will-change-transform transition-[opacity,transform,filter] duration-700 " + (visible ? "opacity-100 blur-0 translate-y-0" : "opacity-0 blur-sm translate-y-2")} style="transition-delay:150ms">
-            <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-xl ring-1 ring-white/10 backdrop-blur">
-                <img src="/nice.jpg" alt="Portrait of Jeremy" class="h-72 w-72 object-cover object-[50%_10%] sm:h-80 sm:w-80 md:h-96 md:w-96" loading="lazy" decoding="async">
+        <Reveal delay={120}>
+            <div class="flex justify-center lg:justify-end">
+                <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-xl ring-1 ring-white/10 backdrop-blur">
+                    <img src="/nice.jpg" alt="Portrait of Jeremy" class="h-72 w-72 object-cover object-[50%_10%] sm:h-80 sm:w-80 md:h-96 md:w-96" loading="lazy" decoding="async">
+                </div>
             </div>
-        </div>
+        </Reveal>
     </div>
 </section>
 
 <!-- overview cards -->
-<div id="overview" class="mt-10">
+<div id="overview" class="mt-10 min-h-[300px]">
     <OverviewCards />
 </div>
+
+<!-- anchor sections -->
+<section id="projects" class="mx-auto mt-24 max-w-6xl px-6">
+    <h2 class="text-2xl font-semibold">Projects</h2>
+    <p class="mt-3 text-white/70">Coming soon.</p>
+    <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
+    <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
+</section>
+
+<section id="skills" class="mx-auto mt-24 max-w-6xl px-6">
+    <h2 class="text-2xl font-semibold">Skills</h2>
+    <p class="mt-3 text-white/70">TypeScript, SvelteKit, Node, Embedded C/C++...</p>
+    <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
+</section>
+
+<section id="contact" class="mx-auto mt-24 mb-24 max-w-6xl px-6">
+    <h2 class="text-2xl font-semibold">Contact</h2>
+    <p class="mt-3 text-white/70">Reach out at jeremy@example.com</p>
+    <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
+</section>

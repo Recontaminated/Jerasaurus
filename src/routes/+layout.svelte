@@ -1,6 +1,7 @@
 <script>
 	import '../app.css';
 	import { fly } from 'svelte/transition';
+	import Nav from '$lib/components/Nav.svelte';
 	export let data;
 </script>
 
@@ -21,16 +22,7 @@
 	</div>
 
 	<main class="relative z-10">
-		<!-- global glass nav -->
-		<div class="sticky top-4 z-20 flex justify-center px-4">
-			<div class="flex w-full max-w-3xl items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-2 backdrop-blur supports-[backdrop-filter]:bg-white/5">
-				<a href="/" class="select-none text-sm font-semibold tracking-tight text-white">Jerasaurus</a>
-				<nav class="flex items-center gap-1">
-					<a href="/" class="rounded-xl px-3 py-2 text-sm text-white/80 transition hover:bg-white/5 hover:text-white">Home</a>
-					<a href="/blog" class="rounded-xl px-3 py-2 text-sm text-white/80 transition hover:bg-white/5 hover:text-white">Blog</a>
-				</nav>
-			</div>
-		</div>
+		<Nav />
 
 		{#key data.url}
 			<div in:fly={{ y: 12, duration: 220, delay: 120 }} out:fly={{ y: -12, duration: 180 }}>
