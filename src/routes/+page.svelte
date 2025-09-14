@@ -1,5 +1,6 @@
 <script lang="ts">
     import OverviewCards from '$lib/components/OverviewCards.svelte';
+    import AboutSection from '$lib/components/AboutSection.svelte';
     import Reveal from '$lib/components/Reveal.svelte';
     import ScrollReveal from '$lib/components/ScrollReveal.svelte';
     const socials = [
@@ -57,8 +58,17 @@
     </div>
 </section>
 
+<!-- Space for gradient to fade -->
+<!-- <div class="h sm:h-48"></div> -->
+
+<!-- About/Philosophy section -->
+<AboutSection />
+
+<!-- More space before cards -->
+<div class="h-24"></div>
+
 <!-- overview cards -->
-<div id="overview" class="mt-10 min-h-[300px]">
+<div id="overview" class="min-h-[300px]">
     <OverviewCards />
 </div>
 
