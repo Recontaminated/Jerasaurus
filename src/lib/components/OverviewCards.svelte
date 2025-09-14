@@ -1,12 +1,16 @@
 <script lang="ts">
 	// placeholder data; can be wired later
 	type Card = { title: string; description: string; href?: string; icon?: string };
-	export let cards: Card[] = [
+	interface Props {
+		cards?: Card[];
+	}
+
+	let { cards = [
 		{ title: 'Github Activity', description: 'Contributions and trends in the last year' },
 		{ title: 'Tech Stack', description: 'TypeScript, SvelteKit, Tailwind, Node, and more' },
 		{ title: 'Typing Speed', description: 'WPM and accuracy practice' },
 		{ title: 'Latest Project', description: 'What I am building now' }
-	];
+	] }: Props = $props();
 </script>
 
 <section class="mx-auto max-w-6xl px-6 pb-24">

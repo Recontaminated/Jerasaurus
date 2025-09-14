@@ -1,24 +1,32 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
 
 	type Link = { href: string; label: string };
-	export let links: Link[] = [
+	interface Props {
+		links?: Link[];
+	}
+
+	let { links = [
 		{ href: '/', label: 'Home' },
 		{ href: '#projects', label: 'Projects' },
 		{ href: '#skills', label: 'Skills' },
 		{ href: '#contact', label: 'Contact' },
 		{ href: '/blog', label: 'Blog' }
-	];
+	] }: Props = $props();
 
-	$: pathname = $page.url.pathname;
+	let pathname = $derived($page.url.pathname);
 
-	let activeSection = 'home';
-	let isScrolled = false;
+	let activeSection = $state('home');
+	let isScrolled = $state(false);
 	let scrollY = 0;
 
 	// Force reactivity
-	$: activeSection, console.log('Reactive activeSection:', activeSection);
+	run(() => {
+		activeSection, console.log('Reactive activeSection:', activeSection);
+	});
 
 	function isActive(href: string): boolean {
 		if (pathname !== '/') {
@@ -110,7 +118,7 @@
 				{#each links as l}
 					<a
 						href={l.href}
-						on:click={(e) => handleNavClick(e, l.href)}
+						onclick={(e) => handleNavClick(e, l.href)}
 						class={`rounded-xl px-3 py-2 text-sm text-white/80 transition hover:bg-white/5 hover:text-white ${isActive(l.href) ? 'bg-white/10 text-white font-medium' : ''}`}
 					>
 						{l.label}

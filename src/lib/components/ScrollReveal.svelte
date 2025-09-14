@@ -1,12 +1,22 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  export let delay = 0;
-  export let duration = 800;
-  export let bounce = true;
+  interface Props {
+    delay?: number;
+    duration?: number;
+    bounce?: boolean;
+    children?: import('svelte').Snippet;
+  }
 
-  let element: HTMLElement;
-  let visible = false;
+  let {
+    delay = 0,
+    duration = 800,
+    bounce = true,
+    children
+  }: Props = $props();
+
+  let element: HTMLElement = $state();
+  let visible = $state(false);
 
   onMount(() => {
     const observer = new IntersectionObserver(
@@ -42,7 +52,7 @@
   class="will-change-transform transition-[opacity,transform,filter] {visible ? 'opacity-100 blur-0 translate-y-0' : 'opacity-0 blur-md translate-y-8'} {visible && bounce ? 'animate-bounce-in' : ''}"
   style="transition-duration: {duration}ms"
 >
-  <slot />
+  {@render children?.()}
 </div>
 
 <style>

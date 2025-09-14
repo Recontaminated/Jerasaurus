@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import { fly } from 'svelte/transition';
 	import Nav from '$lib/components/Nav.svelte';
-	export let data;
+	let { data, children } = $props();
 </script>
 
 <div class="relative min-h-screen bg-neutral-950 text-neutral-100 antialiased">
@@ -49,7 +49,7 @@
 
 		{#key data.url}
 			<div in:fly={{ y: 12, duration: 220, delay: 120 }} out:fly={{ y: -12, duration: 180 }}>
-				<slot />
+				{@render children?.()}
 			</div>
 		{/key}
 	</main>
