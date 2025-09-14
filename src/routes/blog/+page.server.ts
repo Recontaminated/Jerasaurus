@@ -9,40 +9,48 @@ import { env } from '$env/dynamic/private';
 //
 // }
 //write the commented function but correctly typed with pageServerLoad
-export const load: PageServerLoad = async ({ params }) => {
-	const posts = await fetch(`${env.STRAPI_HOST}/api/posts`);
+type StrapiPost = {
+	attributes: {
+		slug: string;
+		title: string;
+		description?: string;
+		updated?: string;
+		updatedAt: string;
+	};
+};
 
-	let json = await posts.json();
+type PostSummary = {
+	attributes: {
+		slug: string;
+		title: string;
+		description?: string;
+		updatedAt: Date;
+		shortenedDate: string;
+	};
+};
 
-
+export const load: PageServerLoad = async () => {
+	const res = await fetch(`${env.STRAPI_HOST}/api/posts`);
+	const raw = (await res.json()) as { data: StrapiPost[] };
 
 	const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-	json = json.data.map((post) => {
+	const json: PostSummary[] = raw.data
+		.map((post: StrapiPost) => {
+			const updatedStr = post.attributes.updated ?? post.attributes.updatedAt;
+			const date = new Date(updatedStr);
+			const shortenedDate = `${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+			return {
+				attributes: {
+					slug: post.attributes.slug,
+					title: post.attributes.title,
+					description: post.attributes.description,
+					updatedAt: date,
+					shortenedDate
+				}
+			} as PostSummary;
+		})
+		.sort((a: PostSummary, b: PostSummary) => b.attributes.updatedAt.getTime() - a.attributes.updatedAt.getTime());
 
-		let date;
-		let shortenedDate;
-
-		if (post.attributes?.updated) {
-			date = new Date(post.attributes.updated);
-			shortenedDate = `${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
-		}
-		else {
-			date = new Date(post.attributes.updatedAt);
-			shortenedDate = `${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
-		}
-	console.log(date)
-		return {
-			attributes: {
-				slug: post.attributes.slug,
-				title: post.attributes.title,
-				description: post.attributes.description,
-				updatedAt : date,
-				shortenedDate: shortenedDate,
-			}
-		}
-	}).sort(function(a,b){
-		return new Date( b.attributes.updatedAt) - new Date(a.attributes.updatedAt)
-	});
 	return { json };
 };
