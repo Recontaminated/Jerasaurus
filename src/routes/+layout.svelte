@@ -8,6 +8,8 @@
 <div class="relative min-h-screen bg-neutral-950 text-neutral-100 antialiased">
 	<!-- ambient gradient background -->
 	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+		<!-- extended background for overscroll -->
+		<div class="absolute inset-x-0 -top-[100vh] h-[100vh] bg-neutral-950"></div>
 		<div class="absolute inset-0" style="
 			background: radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
 			radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.28), transparent 60%),
