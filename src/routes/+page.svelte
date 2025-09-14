@@ -34,7 +34,7 @@
 
             <h1 class="mt-6 text-5xl font-extrabold tracking-tight sm:text-7xl">Hi, I'm Jeremy</h1>
             <p class="mt-6 max-w-2xl text-lg leading-8 text-white/70">
-                Full-stack developer and embedded systems engineer studying Mechanical Engineering at Stanford, bringing hardware and software together.
+                Full-stack developer and embedded systems engineer studying Mechanical Engineering and CS at Stanford, bringing hardware and software together.
             </p>
 
             <div class="mt-10 flex items-center gap-3">

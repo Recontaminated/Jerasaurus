@@ -139,4 +139,4 @@
     bind:this={canvas}
     class="pointer-events-none absolute inset-0 z-0"
     style="transform: translateZ(0);"
-/>
+></canvas>

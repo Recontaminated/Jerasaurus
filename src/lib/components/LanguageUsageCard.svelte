@@ -22,8 +22,8 @@
 	}: Props = $props();
 
 	let canvas: HTMLCanvasElement;
-	let hoveredSegment: number | null = null;
-	let tooltip = { show: false, x: 0, y: 0, data: null as LanguageData | null };
+	let hoveredSegment = $state<number | null>(null);
+	let expandOther = $state(false);
 
 	// Language colors mapping
 	const languageColors: Record<string, string> = {
@@ -53,13 +53,60 @@
 		'SQL': '#336791'
 	};
 
+	// Generate a deterministic color based on language name
+	function getLanguageColor(name: string): string {
+		if (languageColors[name]) {
+			return languageColors[name];
+		}
+
+		// Generate deterministic color from string hash
+		let hash = 0;
+		for (let i = 0; i < name.length; i++) {
+			hash = name.charCodeAt(i) + ((hash << 5) - hash);
+		}
+
+		// Convert to hex color with good saturation and lightness
+		const hue = Math.abs(hash) % 360;
+		const saturation = 65 + (Math.abs(hash >> 8) % 20); // 65-85%
+		const lightness = 50 + (Math.abs(hash >> 16) % 15); // 50-65%
+
+		// Convert HSL to hex
+		const h = hue / 360;
+		const s = saturation / 100;
+		const l = lightness / 100;
+
+		const hslToRgb = (h: number, s: number, l: number) => {
+			let r, g, b;
+			if (s === 0) {
+				r = g = b = l;
+			} else {
+				const hue2rgb = (p: number, q: number, t: number) => {
+					if (t < 0) t += 1;
+					if (t > 1) t -= 1;
+					if (t < 1/6) return p + (q - p) * 6 * t;
+					if (t < 1/2) return q;
+					if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+					return p;
+				};
+				const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+				const p = 2 * l - q;
+				r = hue2rgb(p, q, h + 1/3);
+				g = hue2rgb(p, q, h);
+				b = hue2rgb(p, q, h - 1/3);
+			}
+			return '#' + [r, g, b].map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join('');
+		};
+
+		return hslToRgb(h, s, l);
+	}
+
 	// Process API data into display format with "Other" category
 	let languages = $derived(
 		apiLanguages.length === 0 ? [] : (() => {
 			const top5 = apiLanguages.slice(0, 5).map(lang => ({
 				name: lang.name,
 				value: lang.percent,
-				color: languageColors[lang.name] || '#' + Math.floor(Math.random()*16777215).toString(16),
+				color: getLanguageColor(lang.name),
 				time: lang.text || lang.digital
 			}));
 
@@ -109,9 +156,9 @@
 				ctx.save();
 				ctx.shadowColor = lang.color;
 				ctx.shadowBlur = 20;
-				ctx.fillStyle = lang.color + 'DD';
+				ctx.fillStyle = lang.color;
 			} else {
-				ctx.fillStyle = lang.color + 'CC';
+				ctx.fillStyle = lang.color;
 			}
 
 			ctx.fill();
@@ -167,20 +214,17 @@
 
 			if (foundSegment !== hoveredSegment) {
 				hoveredSegment = foundSegment;
-				if (foundSegment !== -1) {
-					tooltip = {
-						show: true,
-						x: e.clientX,
-						y: e.clientY,
-						data: languages[foundSegment]
-					};
+				if (foundSegment !== -1 && languages[foundSegment].name === 'Other') {
+					expandOther = true;
+				} else {
+					expandOther = false;
 				}
 				drawPieChart();
 			}
 		} else {
 			if (hoveredSegment !== null) {
 				hoveredSegment = null;
-				tooltip.show = false;
+				expandOther = false;
 				drawPieChart();
 			}
 		}
@@ -188,7 +232,7 @@
 
 	function handleMouseLeave() {
 		hoveredSegment = null;
-		tooltip.show = false;
+		expandOther = false;
 		drawPieChart();
 	}
 
@@ -213,29 +257,9 @@
 				width="250"
 				height="250"
 				class="w-[250px] h-[250px] cursor-pointer"
-				on:mousemove={handleMouseMove}
-				on:mouseleave={handleMouseLeave}
-			/>
-
-			{#if tooltip.show && tooltip.data}
-				<div
-					class="fixed z-50 bg-gray-900 border border-gray-600 rounded-lg p-3 pointer-events-none transform -translate-x-1/2"
-					style="left: {tooltip.x}px; top: {tooltip.y - 60}px;"
-				>
-					<div class="flex items-center gap-2">
-						<div class="w-3 h-3 rounded-full" style="background-color: {tooltip.data.color}"></div>
-						<span class="text-white font-medium">{tooltip.data.name}</span>
-					</div>
-					<div class="text-sm text-gray-400 mt-1">
-						{tooltip.data.time || `${tooltip.data.value.toFixed(1)}%`}
-					</div>
-					{#if tooltip.data.details}
-						<div class="text-xs text-gray-500 mt-1 max-w-[200px]">
-							{tooltip.data.details}
-						</div>
-					{/if}
-				</div>
-			{/if}
+				onmousemove={handleMouseMove}
+				onmouseleave={handleMouseLeave}
+			></canvas>
 		</div>
 
 		<!-- Languages Table - Right Side -->
@@ -248,22 +272,43 @@
 				</div>
 			{:else if languages.length > 0}
 				<div class="space-y-3">
-					{#each languages as lang}
-					<div class="flex items-center justify-between group">
-						<div class="flex items-center gap-3">
+					{#each languages as lang, index}
+					<div class="relative flex items-center justify-between group transition-all duration-200">
+						{#if hoveredSegment === index}
+							<div class="absolute inset-0 bg-gray-700/30 rounded-lg pointer-events-none"></div>
+						{/if}
+						<div class="relative flex items-center gap-3 flex-1 px-2 py-1">
 							<div
-								class="w-4 h-4 rounded transition-transform group-hover:scale-110"
+								class="w-4 h-4 rounded transition-all duration-200 flex-shrink-0
+								{hoveredSegment === index ? 'scale-125 shadow-lg' : 'group-hover:scale-110'}"
 								style="background-color: {lang.color}"
 							></div>
-							<span class="text-sm text-gray-300 group-hover:text-white transition-colors">
+							<span class="text-sm transition-colors duration-200 flex-shrink-0
+								{hoveredSegment === index ? 'text-white font-medium' : 'text-gray-300 group-hover:text-white'}">
 								{lang.name}
 							</span>
+							{#if lang.name === 'Other' && expandOther && lang.details}
+								<div class="flex flex-wrap gap-1 ml-2">
+									{#each lang.details.split(', ').slice(0, 10) as otherLang}
+										<span class="px-1.5 py-0.5 bg-gray-700/50 rounded text-xs text-gray-400">
+											{otherLang}
+										</span>
+									{/each}
+									{#if lang.details.split(', ').length > 10}
+										<span class="px-1.5 py-0.5 text-xs text-gray-500">
+											+{lang.details.split(', ').length - 10}
+										</span>
+									{/if}
+								</div>
+							{/if}
 						</div>
-						<div class="flex items-center gap-3">
-							<span class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+						<div class="relative flex items-center gap-3 flex-shrink-0 px-2 py-1">
+							<span class="text-sm transition-colors duration-200
+								{hoveredSegment === index ? 'text-gray-200' : 'text-gray-400 group-hover:text-gray-300'}">
 								{lang.time}
 							</span>
-							<span class="text-sm text-gray-500 w-12 text-right">
+							<span class="text-sm w-12 text-right transition-colors duration-200
+								{hoveredSegment === index ? 'text-purple-400 font-medium' : 'text-gray-500'}">
 								{lang.value.toFixed(1)}%
 							</span>
 						</div>
