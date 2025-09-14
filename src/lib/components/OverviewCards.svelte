@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import ScrollReveal from '$lib/components/ScrollReveal.svelte';
 	import LanguageUsageCard from '$lib/components/LanguageUsageCard.svelte';
+	import NowPlayingCard from '$lib/components/NowPlayingCard.svelte';
 
 	type Card = {
 		id: string;
@@ -45,7 +46,7 @@
 			accentColor: 'rgb(59, 130, 246)',
 			loading: true,
 			icon: 'code',
-			size: 'large' as const
+			size: 'wide' as const
 		},
 		{
 			id: 'languages',
@@ -321,7 +322,7 @@
 			{/if}
 		</div>
 
-		<!-- Cards grid -->
+		<!-- Cards grid with Now Playing card -->
 		<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-[minmax(120px,auto)]">
 		{#each reactiveCards as card}
 			<div class="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-br {card.gradient} p-[1px] transition-all duration-300 hover:scale-105 hover:shadow-2xl {getCardClass(card.size || 'medium')}">
@@ -380,6 +381,11 @@
 				</div>
 			</div>
 		{/each}
+
+		<!-- Now Playing Card directly in the grid -->
+		<div class="col-span-2 sm:col-span-2 lg:col-span-2">
+			<NowPlayingCard />
+		</div>
 		</div>
 
 		<!-- Language Usage Card -->

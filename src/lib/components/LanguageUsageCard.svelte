@@ -136,7 +136,7 @@
 
 		const centerX = canvas.width / 2;
 		const centerY = canvas.height / 2;
-		const radius = Math.min(centerX, centerY) - 30;
+		const radius = Math.min(centerX, centerY) - 20;
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -194,7 +194,7 @@
 		const dx = x - centerX;
 		const dy = y - centerY;
 		const distance = Math.sqrt(dx * dx + dy * dy);
-		const radius = Math.min(centerX, centerY) - 30;
+		const radius = Math.min(centerX, centerY) - 20;
 
 		if (distance < radius && distance > radius * 0.4) {
 			let angle = Math.atan2(dy, dx) + Math.PI / 2;
@@ -254,9 +254,9 @@
 		<div class="relative flex-shrink-0">
 			<canvas
 				bind:this={canvas}
-				width="250"
-				height="250"
-				class="w-[250px] h-[250px] cursor-pointer"
+				width="200"
+				height="200"
+				class="w-[200px] h-[200px] cursor-pointer"
 				onmousemove={handleMouseMove}
 				onmouseleave={handleMouseLeave}
 			></canvas>
