@@ -15,7 +15,8 @@ export const load: PageServerLoad = async () => {
 					description: post.description,
 					updatedAt: post.date,
 					shortenedDate: post.shortenedDate
-				}
+				},
+				headerImage: post.headerImage
 			}))
 		};
 	} catch (error) {
