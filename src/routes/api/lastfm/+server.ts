@@ -35,7 +35,7 @@ async function isSongAppropriate(songName: string, artist: string): Promise<bool
 	try {
 		const prompt = `Analyze if the song "${songName}" by "${artist}" is appropriate for a professional portfolio website. Consider explicit content, profanity, drug references, violence, or controversial themes. Return your assessment.`;
 
-		const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', {
+		const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

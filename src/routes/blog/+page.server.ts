@@ -1,28 +1,26 @@
 import type { PageServerLoad } from './$types';
-import { getBlogPosts } from '$lib/keystone.js';
+import { getBlogPosts } from '$lib/strapi.js';
 
 export const load: PageServerLoad = async () => {
 	try {
-		const posts = await getBlogPosts({
-			orderBy: [{ date: 'desc' as const }]
-		});
+		const posts = await getBlogPosts();
 
-		return { 
+		return {
 			posts: posts.map(post => ({
 				attributes: {
 					slug: post.slug,
 					title: post.title,
-					description: post.description,
-					updatedAt: post.date,
-					shortenedDate: post.shortenedDate
+					description: '',
+					updatedAt: post.date || post.updatedAt,
+					shortenedDate: new Date(post.date || post.updatedAt).toLocaleDateString()
 				},
-				headerImage: post.headerImage
+				headerImage: post.cover?.url ? `/api/images${post.cover.url}` : null
 			}))
 		};
 	} catch (error) {
 		console.error('Error loading blog posts:', error);
-		return { 
-			posts: [] 
+		return {
+			posts: []
 		};
 	}
 };

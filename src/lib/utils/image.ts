@@ -1,5 +1,5 @@
 /**
- * Image optimization utilities for Keystone CMS images
+ * Image optimization utilities for Strapi CMS images
  */
 
 export interface ImageOptions {
@@ -29,12 +29,12 @@ export function getOptimizedImageUrl(imageId: string, options: ImageOptions = {}
 }
 
 /**
- * Extract image ID from Keystone image URL
+ * Extract image ID from Strapi image URL
  */
 export function extractImageId(url: string): string | null {
   if (!url) return null;
-  
-  const imageMatch = url.match(/\/images\/([^/?]+)/);
+
+  const imageMatch = url.match(/\/uploads\/([^/?]+)/);
   return imageMatch ? imageMatch[1] : null;
 }
 
@@ -71,9 +71,7 @@ export function getResponsiveImageUrls(imageId: string, basePath: string = '/api
 export function toProxyUrl(url: string): string {
   if (!url) return url;
 
-  console.log('toProxyUrl input URL:', url);
   const encodedUrl = encodeURIComponent(url);
   const proxyUrl = `/api/images/${encodedUrl}`;
-  console.log('Encoded S3 URL for proxy:', proxyUrl);
   return proxyUrl;
 }

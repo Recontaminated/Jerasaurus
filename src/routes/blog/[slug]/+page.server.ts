@@ -1,26 +1,26 @@
 import type { PageServerLoad } from './$types';
-import { getBlogPostBySlug } from '$lib/keystone.js';
+import { getBlogPost } from '$lib/strapi.js';
 import { error } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
-		const post = await getBlogPostBySlug(params.slug);
-		
+		const post = await getBlogPost(params.slug);
+
 		if (!post) {
 			throw error(404, 'Post not found');
 		}
 
-		return { 
+		return {
 			post: {
 				id: post.id,
 				title: post.title,
 				content: post.content,
-				date: post.date,
-				shortenedDate: post.shortenedDate,
-				headerImage: post.headerImage,
-				project: post.project,
-				author: post.author,
-				description: post.description
+				date: post.date || post.updatedAt,
+				shortenedDate: new Date(post.date || post.updatedAt).toLocaleDateString(),
+				headerImage: post.cover?.url ? `/api/images${post.cover.url}` : null,
+				project: null,
+				author: null,
+				description: ''
 			}
 		};
 	} catch (err) {

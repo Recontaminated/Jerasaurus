@@ -27,10 +27,10 @@
 						</div>
 						
 						<!-- Header Image on Right -->
-						{#if post.headerImage?.url}
+						{#if post.headerImage}
 							<div class="absolute inset-0 w-full">
-								<img 
-									src={post.headerImage.url}
+								<img
+									src={post.headerImage}
 									alt={post.attributes.title}
 									class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
 									loading="lazy"
