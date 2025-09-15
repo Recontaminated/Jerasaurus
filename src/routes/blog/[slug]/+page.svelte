@@ -1,86 +1,79 @@
 <script lang="ts">
 	import { getOptimizedImageUrl, extractImageId } from '$lib/utils/image.js';
+	import DocumentRenderer from '$lib/components/DocumentRenderer.svelte';
 	
 	let { data } = $props();
 	let post = data.post;
 	
-	// Helper function to render Keystone document content
-	function renderContent(document: any): string {
-		if (!document) return '<p>No content available</p>';
-		
-		try {
-			// Handle direct array (as in your case) or nested document structure
-			let children = Array.isArray(document) ? document : document.children || document.content || [];
-			
-			if (!Array.isArray(children)) {
-				return '<p>Content format not supported</p>';
+	// Custom renderers for specific styling
+	const customRenderers = {
+		inline: {
+			link: ({ children, href }: any) => 
+				`<a href="${href}" class="text-blue-400 hover:text-blue-300 transition-colors underline" target="_blank" rel="noopener noreferrer">${children}</a>`,
+			relationship: ({ relationship, data }: any) => {
+				if (relationship === 'mention' && data?.data) {
+					return `<a href="/author/${data.data.id}" class="text-blue-400 hover:text-blue-300 transition-colors">@${data.data.name}</a>`;
+				}
+				return `<span class="bg-white/10 px-1 rounded text-sm">[${relationship}]</span>`;
 			}
-			
-			const html = children.map((child: any) => {
-				if (child.type === 'paragraph') {
-					const text = child.children?.map((c: any) => {
-						// Handle formatted text (bold, italic, etc.)
-						let content = c.text || '';
-						if (c.bold) content = `<strong>${content}</strong>`;
-						if (c.italic) content = `<em>${content}</em>`;
-						if (c.code) content = `<code>${content}</code>`;
-						if (c.underline) content = `<u>${content}</u>`;
-						if (c.strikethrough) content = `<s>${content}</s>`;
-						return content;
-					}).join('') || '';
-					return text ? `<p>${text}</p>` : '';
+		},
+		block: {
+			blockquote: ({ children }: any) => 
+				`<blockquote class="border-l-4 border-white/20 pl-4 italic text-white/80 my-4">${children}</blockquote>`,
+			code: ({ children, language }: any) => {
+				const langClass = language ? ` class="language-${language}"` : '';
+				return `<pre class="bg-white/5 border border-white/10 rounded-lg p-4 overflow-x-auto my-4"><code${langClass} class="text-sm font-mono">${children}</code></pre>`;
+			},
+			divider: () => '<hr class="border-white/20 my-8">',
+			layout: ({ children, layout }: any) => {
+				const columns = layout.length;
+				const gridCols = columns === 2 ? 'md:grid-cols-2' : columns === 3 ? 'md:grid-cols-3' : 'grid-cols-1';
+				return `<div class="grid ${gridCols} gap-6 my-6">${children}</div>`;
+			}
+		},
+		componentBlocks: {
+			image: (props: any) => {
+				// Extract image data from Keystone relationship structure
+				let imageData = null;
+				
+				if (props?.imageRel?.data?.image?.url) {
+					imageData = props.imageRel.data.image;
+				} else if (props?.imageRel?.image?.url) {
+					imageData = props.imageRel.image;
+				} else if (props?.image?.url) {
+					imageData = props.image;
 				}
 				
-				if (child.type === 'heading') {
-					const level = Math.min(Math.max(child.level || 1, 1), 6); // Ensure level is 1-6
-					const text = child.children?.map((c: any) => {
-						let content = c.text || '';
-						if (c.bold) content = `<strong>${content}</strong>`;
-						if (c.italic) content = `<em>${content}</em>`;
-						return content;
-					}).join('') || '';
-					return text ? `<h${level}>${text}</h${level}>` : '';
+				if (!imageData?.url) {
+					return `<div class="text-white/50 italic my-4">Image not available</div>`;
 				}
 				
-				if (child.type === 'code') {
-					const text = child.children?.map((c: any) => c.text || '').join('') || '';
-					const language = child.language ? ` class="language-${child.language}"` : '';
-					return text ? `<pre><code${language}>${text}</code></pre>` : '';
+				// Extract metadata
+				const alt = props?.imageAlt || props?.alt || props?.caption || 
+					       props?.imageRel?.data?.altText || imageData?.altText || '';
+				const caption = props?.caption || props?.description || '';
+				const width = props?.width || imageData?.width;
+				const height = props?.height || imageData?.height;
+				
+				// Create optimized image URL
+				const imageId = extractImageId(imageData.url);
+				const imageUrl = imageId ? 
+					getOptimizedImageUrl(imageId, { width: width || 800, quality: 85, format: 'webp' }) :
+					imageData.url;
+				
+				const imgTag = `<img src="${imageUrl}" alt="${alt}" class="w-full h-auto rounded-lg shadow-lg" loading="lazy"${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}>`;
+				
+				if (caption) {
+					return `<figure class="my-8">
+						${imgTag}
+						<figcaption class="text-sm text-white/60 mt-3 text-center italic">${caption}</figcaption>
+					</figure>`;
 				}
 				
-				if (child.type === 'blockquote') {
-					const content = renderContent(child.children || []);
-					return content ? `<blockquote>${content}</blockquote>` : '';
-				}
-				
-				if (child.type === 'list') {
-					const listItems = child.children?.map((item: any) => {
-						const itemContent = renderContent(item.children || []);
-						return `<li>${itemContent}</li>`;
-					}).join('') || '';
-					const listType = child.listType === 'ordered' ? 'ol' : 'ul';
-					return listItems ? `<${listType}>${listItems}</${listType}>` : '';
-				}
-				
-				if (child.type === 'divider') {
-					return '<hr>';
-				}
-				
-				// Handle direct text nodes
-				if (child.text) {
-					return child.text;
-				}
-				
-				return '';
-			}).filter(Boolean).join('');
-			
-			return html || '<p>No content to display</p>';
-			
-		} catch (error) {
-			console.error('Error rendering content:', error);
-			return `<p>Error rendering content: ${error.message}</p>`;
+				return `<div class="my-8">${imgTag}</div>`;
+			}
 		}
-	}
+	};
 </script>
 
 <article class="mx-auto max-w-4xl px-6 py-20">
@@ -146,7 +139,7 @@
 	<!-- Content -->
 	<div class="prose prose-invert prose-lg max-w-none">
 		{#if post.content}
-			{@html renderContent(post.content)}
+			<DocumentRenderer document={post.content} renderers={customRenderers} />
 		{:else}
 			<p class="text-white/70">No content available.</p>
 		{/if}
