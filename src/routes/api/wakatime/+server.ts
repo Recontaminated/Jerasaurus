@@ -13,7 +13,7 @@ export const GET: RequestHandler = async () => {
 		// Encode the API key as Base64 for Basic auth
 		const base64Token = Buffer.from(WAKATIME_API_TOKEN).toString('base64');
 
-		const response = await fetch('https://wakaapi.jhsieh.dev/api/compat/wakatime/v1/users/current/stats/week', {
+		const response = await fetch('https://wakaapi.jhsieh.dev/api/compat/wakatime/v1/users/current/stats/last_7_days', {
 			headers: {
 				'Accept': 'application/json',
 				'Authorization': `Basic ${base64Token}`

@@ -39,7 +39,7 @@
 		{
 			id: 'coding',
 			title: 'Coding Time',
-			description: 'This week',
+			description: 'Last 7 days',
 			value: 'Loading...',
 			subvalue: '',
 			gradient: 'from-blue-600 to-cyan-600',
@@ -51,7 +51,7 @@
 		{
 			id: 'languages',
 			title: 'Top Language',
-			description: 'Most used this week',
+			description: 'Most used last 7 days',
 			value: 'Loading...',
 			subvalue: '',
 			gradient: 'from-green-600 to-emerald-600',
@@ -162,7 +162,7 @@
 						if (apiData.human_readable_total) {
 							const parts = apiData.human_readable_total.split(' ');
 							reactiveCards[codingCardIndex].value = parts.slice(0, -1).join(' ');
-							reactiveCards[codingCardIndex].subvalue = 'this week';
+							reactiveCards[codingCardIndex].subvalue = 'last 7 days';
 							// Store total time for language card
 							totalCodingTime = apiData.human_readable_total;
 						}
