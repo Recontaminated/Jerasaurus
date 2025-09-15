@@ -2,29 +2,10 @@
 	let { data } = $props();
 	let project = data.project;
 	
-	function formatDateRange(startDate?: Date, endDate?: Date): string {
+	function formatDate(dateString: string): string {
+		const date = new Date(dateString);
 		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-		
-		if (!startDate) return 'Date TBD';
-		
-		const start = `${monthNames[startDate.getUTCMonth()]} ${startDate.getUTCFullYear()}`;
-		
-		if (!endDate) {
-			return `${start} - Present`;
-		}
-		
-		const end = `${monthNames[endDate.getUTCMonth()]} ${endDate.getUTCFullYear()}`;
-		return `${start} - ${end}`;
-	}
-	
-	function getStatusColor(status?: string): string {
-		switch (status?.toLowerCase()) {
-			case 'completed': return 'bg-green-500/20 text-green-400 border-green-500/30';
-			case 'in progress': case 'active': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-			case 'planning': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-			case 'on hold': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-			default: return 'bg-white/10 text-white/70 border-white/20';
-		}
+		return `${monthNames[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 	}
 </script>
 
@@ -41,19 +22,13 @@
 			<h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
 				{project.name}
 			</h1>
-			
+
 			<div class="flex flex-wrap items-center gap-4">
-				{#if project.status}
-					<span class="px-3 py-1 text-sm border rounded-full {getStatusColor(project.status)}">
-						{project.status}
-					</span>
-				{/if}
-				
 				<span class="text-white/60">
-					{formatDateRange(project.startDate, project.endDate)}
+					{formatDate(project.createdAt)}
 				</span>
 			</div>
-			
+
 			{#if project.description}
 				<div class="prose prose-invert prose-lg max-w-none">
 					<p class="text-xl text-white/80 leading-relaxed">
@@ -64,49 +39,55 @@
 		</div>
 	</header>
 	
+	<!-- Hero Image -->
+	{#if project.heroimage?.url}
+		<div class="mb-12 overflow-hidden rounded-2xl border border-white/10">
+			<img
+				src={project.heroimage.url}
+				alt={project.heroimage.alternativeText || project.name}
+				class="w-full h-auto"
+			/>
+		</div>
+	{/if}
+
 	<!-- Blog Posts Section -->
-	{#if project.blogPosts && project.blogPosts.length > 0}
+	{#if project.blog_posts && project.blog_posts.length > 0}
 		<section class="mb-12">
 			<h2 class="text-2xl font-semibold mb-6">Related Blog Posts</h2>
 			
 			<div class="space-y-4">
-				{#each project.blogPosts as post}
+				{#each project.blog_posts as post}
 					<a 
 						href="/blog/{post.slug}"
 						class="group block overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur p-6 transition-all hover:bg-white/10 hover:border-white/20"
 					>
 						<div class="flex gap-6">
-							{#if post.headerImage}
+							{#if post.cover?.url}
 								<div class="shrink-0">
-									<img 
-										src={post.headerImage.url} 
+									<img
+										src={post.cover.url}
 										alt={post.title}
 										class="w-20 h-20 rounded-lg object-cover"
-										width={post.headerImage.width}
-										height={post.headerImage.height}
 									/>
 								</div>
 							{/if}
-							
+
 							<div class="flex-1 space-y-2">
 								<div class="flex items-center gap-4">
-									<time class="text-sm text-white/50" datetime={post.date.toISOString()}>
-										{post.shortenedDate}
-									</time>
-									{#if post.author}
-										<span class="text-sm text-white/50">
-											By {post.author.name}
-										</span>
+									{#if post.date}
+										<time class="text-sm text-white/50" datetime={post.date}>
+											{formatDate(post.date)}
+										</time>
 									{/if}
 								</div>
-								
+
 								<h3 class="text-lg font-medium group-hover:text-blue-400 transition-colors">
 									{post.title}
 								</h3>
-								
-								{#if post.description}
+
+								{#if post.content}
 									<p class="text-white/70 text-sm line-clamp-2">
-										{post.description}
+										{post.content.substring(0, 150)}...
 									</p>
 								{/if}
 							</div>

@@ -22,20 +22,17 @@ export interface BlogPost {
 }
 
 export interface Project {
-	id: number;
+	id: number | string;
 	name: string;
-	slug: string;
 	description: string;
-	content?: string;
-	technologies?: string[];
-	githubUrl?: string;
-	liveUrl?: string;
-	createdAt: string;
-	updatedAt: string;
-	image?: {
+	heroimage?: {
 		url: string;
 		alternativeText?: string;
 	};
+	blog_posts?: BlogPost[];
+	createdAt: string;
+	updatedAt: string;
+	documentId?: string;
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
@@ -95,8 +92,13 @@ export async function getProjects(): Promise<Project[]> {
 
 		return response.data.map((item: any) => ({
 			id: item.documentId || item.id,
-			...item,
-			image: item.image
+			name: item.name,
+			description: item.description,
+			heroimage: item.heroimage,
+			blog_posts: item.blog_posts?.data || item.blog_posts || [],
+			createdAt: item.createdAt,
+			updatedAt: item.updatedAt,
+			documentId: item.documentId
 		}));
 	} catch (error) {
 		console.error('Error fetching projects:', error);
@@ -104,27 +106,27 @@ export async function getProjects(): Promise<Project[]> {
 	}
 }
 
-export async function getProject(slug: string): Promise<Project | null> {
+export async function getProject(id: string): Promise<Project | null> {
 	try {
 		const projects = strapi.collection('projects');
-		const response = await projects.find({
-			filters: {
-				slug: {
-					$eq: slug
-				}
-			},
+		const response = await projects.findOne(id, {
 			populate: '*'
 		});
 
-		if (!response.data || response.data.length === 0) {
+		if (!response || !response.data) {
 			return null;
 		}
 
-		const item = response.data[0];
+		const item = response.data;
 		return {
 			id: item.documentId || item.id,
-			...item,
-			image: item.image
+			name: item.name,
+			description: item.description,
+			heroimage: item.heroimage,
+			blog_posts: item.blog_posts?.data || item.blog_posts || [],
+			createdAt: item.createdAt,
+			updatedAt: item.updatedAt,
+			documentId: item.documentId
 		};
 	} catch (error) {
 		console.error('Error fetching project:', error);

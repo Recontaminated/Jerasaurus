@@ -5,6 +5,10 @@
     import Reveal from '$lib/components/Reveal.svelte';
     import ScrollReveal from '$lib/components/ScrollReveal.svelte';
     import ScrollColorBar from '$lib/components/ScrollColorBar.svelte';
+
+    let { data } = $props();
+    let projects = data.projects;
+
     const socials = [
         { href: 'https://github.com/recontaminated', label: 'GitHub', icon: 'github' },
         { href: 'https://x.com/', label: 'X', icon: 'x' },
@@ -103,16 +107,65 @@
         </div>
 
         <!-- Project Cards Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-purple-600/10 to-pink-600/10 p-6 transition-all duration-300 hover:border-purple-500/50">
-                <h3 class="text-xl font-semibold text-white mb-2">Project Coming Soon</h3>
-                <p class="text-white/60">Working on something amazing...</p>
+        {#if projects && projects.length > 0}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {#each projects as project, index}
+                    <a
+                        href="/projects/{project.id}"
+                        class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br {index % 4 === 0 ? 'from-purple-600/10 to-pink-600/10 hover:border-purple-500/50' : index % 4 === 1 ? 'from-blue-600/10 to-cyan-600/10 hover:border-blue-500/50' : index % 4 === 2 ? 'from-green-600/10 to-teal-600/10 hover:border-green-500/50' : 'from-orange-600/10 to-red-600/10 hover:border-orange-500/50'} transition-all duration-300"
+                    >
+                        {#if project.heroimage?.url}
+                            <div class="aspect-video w-full overflow-hidden bg-white/5">
+                                <img
+                                    src={project.heroimage.url}
+                                    alt={project.heroimage.alternativeText || project.name}
+                                    class="h-full w-full object-cover transition-transform group-hover:scale-105"
+                                    loading="lazy"
+                                />
+                            </div>
+                        {/if}
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                                {project.name}
+                            </h3>
+                            {#if project.description}
+                                <p class="text-white/60 line-clamp-2">
+                                    {project.description}
+                                </p>
+                            {/if}
+                            {#if project.blog_posts && project.blog_posts.length > 0}
+                                <div class="mt-4 text-xs text-white/40">
+                                    {project.blog_posts.length} related post{project.blog_posts.length !== 1 ? 's' : ''}
+                                </div>
+                            {/if}
+                        </div>
+                    </a>
+                {/each}
             </div>
-            <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/10 p-6 transition-all duration-300 hover:border-blue-500/50">
-                <h3 class="text-xl font-semibold text-white mb-2">Project Coming Soon</h3>
-                <p class="text-white/60">Building something incredible...</p>
+
+            <div class="mt-12 text-center">
+                <a
+                    href="/projects"
+                    class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur transition-all hover:bg-white/10 hover:border-white/20"
+                >
+                    View All Projects
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </a>
             </div>
-        </div>
+        {:else}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-purple-600/10 to-pink-600/10 p-6 transition-all duration-300 hover:border-purple-500/50">
+                    <h3 class="text-xl font-semibold text-white mb-2">Projects Coming Soon</h3>
+                    <p class="text-white/60">Working on something amazing...</p>
+                </div>
+                <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/10 p-6 transition-all duration-300 hover:border-blue-500/50">
+                    <h3 class="text-xl font-semibold text-white mb-2">Stay Tuned</h3>
+                    <p class="text-white/60">Building something incredible...</p>
+                </div>
+            </div>
+        {/if}
     </ScrollReveal>
 </section>
 
@@ -123,3 +176,13 @@
         <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
     </ScrollReveal>
 </section>
+
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
