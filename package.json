@@ -10,7 +10,9 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"keystone:sync": "node scripts/generate-keystone-types.js",
+		"keystone:fetch": "node scripts/fetch-schema.js"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -40,7 +42,12 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@graphql-codegen/cli": "^6.0.0",
+		"@graphql-codegen/typescript": "^5.0.0",
+		"@graphql-codegen/typescript-operations": "^5.0.0",
 		"cssnano": "^6.0.1",
+		"graphql": "^16.11.0",
+		"graphql-request": "^7.2.0",
 		"prismjs": "^1.29.0"
 	}
 }

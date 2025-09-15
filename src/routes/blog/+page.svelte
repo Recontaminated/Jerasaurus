@@ -1,6 +1,6 @@
 <script lang="ts">
 	let { data } = $props();
-	let posts = data.json;
+	let posts = data.posts;
 </script>
 
 <section class="mx-auto max-w-4xl px-6 py-20 sm:py-28">
