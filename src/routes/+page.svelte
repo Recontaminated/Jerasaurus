@@ -4,6 +4,7 @@
     import TechStack from '$lib/components/TechStack.svelte';
     import Reveal from '$lib/components/Reveal.svelte';
     import ScrollReveal from '$lib/components/ScrollReveal.svelte';
+    import ScrollColorBar from '$lib/components/ScrollColorBar.svelte';
     const socials = [
         { href: 'https://github.com/recontaminated', label: 'GitHub', icon: 'github' },
         { href: 'https://x.com/', label: 'X', icon: 'x' },
@@ -78,13 +79,40 @@
     <TechStack />
 </div>
 
-<!-- anchor sections -->
-<section id="projects" class="mx-auto mt-24 max-w-6xl px-6">
+<!-- Scroll-triggered Color Bar -->
+<ScrollColorBar />
+
+<!-- Projects Section -->
+<section id="projects" class="mx-auto mt-8 max-w-7xl px-6">
     <ScrollReveal delay={100}>
-        <h2 class="text-2xl font-semibold">Projects</h2>
-        <p class="mt-3 text-white/70">Coming soon.</p>
-        <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
-        <div class="mt-6 h-40 rounded-3xl border border-white/10 bg-white/5"></div>
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur mb-6">
+                <span class="text-sm text-white/60">Featured Work</span>
+            </div>
+
+            <h2 class="text-4xl sm:text-5xl font-bold text-white/90 mb-6">
+                Projects & Creations
+            </h2>
+
+            <p class="max-w-2xl mx-auto text-lg text-white/70 leading-relaxed">
+                A collection of my recent work spanning web applications, embedded systems,
+                and open-source contributions. Each project represents a unique challenge
+                and learning opportunity.
+            </p>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-purple-600/10 to-pink-600/10 p-6 transition-all duration-300 hover:border-purple-500/50">
+                <h3 class="text-xl font-semibold text-white mb-2">Project Coming Soon</h3>
+                <p class="text-white/60">Working on something amazing...</p>
+            </div>
+            <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/10 p-6 transition-all duration-300 hover:border-blue-500/50">
+                <h3 class="text-xl font-semibold text-white mb-2">Project Coming Soon</h3>
+                <p class="text-white/60">Building something incredible...</p>
+            </div>
+        </div>
     </ScrollReveal>
 </section>
 
