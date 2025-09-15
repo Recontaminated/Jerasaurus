@@ -1,13 +1,14 @@
 // Auto-generated types for Keystone CMS
-// Generated on 2025-09-15T01:20:07.364Z
+// Generated on 2025-09-15T03:21:47.164Z
 // Do not edit manually - run 'npm run generate:types' to regenerate
 
-export interface BlogPost_content_Document {
-  document: any;
-}
-
-export interface PasswordState {
-  isSet: boolean;
+export interface ImageFieldOutput {
+  id: string;
+  filesize: number;
+  width: number;
+  height: number;
+  extension: ImageExtension;
+  url: string;
 }
 
 export interface BlogPost {
@@ -18,15 +19,6 @@ export interface BlogPost {
   content?: BlogPost_content_Document;
   project?: Project;
   author?: User;
-}
-
-export interface ImageFieldOutput {
-  id: string;
-  filesize: number;
-  width: number;
-  height: number;
-  extension: ImageExtension;
-  url: string;
 }
 
 export interface Project {
@@ -67,19 +59,17 @@ export enum OrderDirection {
   desc = 'desc'
 }
 
-export interface BlogPostWhereUniqueInput {
+export interface ImageWhereUniqueInput {
   id?: string;
 }
 
-export interface BlogPostWhereInput {
-  AND?: BlogPostWhereInput[];
-  OR?: BlogPostWhereInput[];
-  NOT?: BlogPostWhereInput[];
+export interface ImageWhereInput {
+  AND?: ImageWhereInput[];
+  OR?: ImageWhereInput[];
+  NOT?: ImageWhereInput[];
   id?: IDFilter;
-  title?: StringFilter;
-  date?: DateTimeFilter;
-  project?: ProjectWhereInput;
-  author?: UserWhereInput;
+  name?: StringFilter;
+  altText?: StringFilter;
 }
 
 export interface IDFilter {
@@ -122,6 +112,43 @@ export interface NestedStringFilter {
   not?: NestedStringFilter;
 }
 
+export interface ImageOrderByInput {
+  id?: OrderDirection;
+  name?: OrderDirection;
+  altText?: OrderDirection;
+}
+
+export interface ImageUpdateInput {
+  name?: string;
+  altText?: string;
+  image?: ImageFieldInput;
+}
+
+export interface ImageFieldInput {
+  upload: File;
+}
+
+export interface ImageCreateInput {
+  name?: string;
+  altText?: string;
+  image?: ImageFieldInput;
+}
+
+export interface BlogPostWhereUniqueInput {
+  id?: string;
+}
+
+export interface BlogPostWhereInput {
+  AND?: BlogPostWhereInput[];
+  OR?: BlogPostWhereInput[];
+  NOT?: BlogPostWhereInput[];
+  id?: IDFilter;
+  title?: StringFilter;
+  date?: DateTimeFilter;
+  project?: ProjectWhereInput;
+  author?: UserWhereInput;
+}
+
 export interface DateTimeFilter {
   equals?: string;
   in?: string[];
@@ -146,10 +173,6 @@ export interface BlogPostUpdateInput {
   content?: any;
   project?: ProjectRelateToOneForUpdateInput;
   author?: UserRelateToOneForUpdateInput;
-}
-
-export interface ImageFieldInput {
-  upload: File;
 }
 
 export interface ProjectRelateToOneForUpdateInput {

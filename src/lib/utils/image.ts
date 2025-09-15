@@ -69,6 +69,11 @@ export function getResponsiveImageUrls(imageId: string, basePath: string = '/api
  * Convert any image URL to use our proxy
  */
 export function toProxyUrl(url: string): string {
-  const imageId = extractImageId(url);
-  return imageId ? `/api/images/${imageId}` : url;
+  if (!url) return url;
+
+  console.log('toProxyUrl input URL:', url);
+  const encodedUrl = encodeURIComponent(url);
+  const proxyUrl = `/api/images/${encodedUrl}`;
+  console.log('Encoded S3 URL for proxy:', proxyUrl);
+  return proxyUrl;
 }

@@ -172,7 +172,8 @@ export async function getBlogPosts(options?: {
     };
 
     const response = await client.request<{ blogPosts: BlogPost[] }>(GET_BLOG_POSTS, variables);
-    
+    console.log('Raw GraphQL response for blog posts:', JSON.stringify(response, null, 2));
+
     return response.blogPosts.map(post => {
       const { date, shortenedDate } = formatDate(post.date || new Date().toISOString());
       return {
@@ -217,7 +218,12 @@ export async function getBlogPost(id: string): Promise<FormattedBlogPost | null>
       shortenedDate,
       headerImage: post.headerImage ? {
         ...post.headerImage,
-        url: fixImageUrl(post.headerImage.url)
+        url: (() => {
+          console.log('S3 URL from Keystone:', post.headerImage.url);
+          const proxyUrl = toProxyUrl(post.headerImage.url);
+          console.log('Converted to proxy URL:', proxyUrl);
+          return proxyUrl;
+        })()
       } : undefined,
       content: post.content?.document,
       project: post.project,
@@ -275,7 +281,12 @@ export async function getProjects(options?: {
           shortenedDate,
           headerImage: post.headerImage ? {
             ...post.headerImage,
-            url: fixImageUrl(post.headerImage.url)
+            url: (() => {
+          console.log('S3 URL from Keystone:', post.headerImage.url);
+          const proxyUrl = toProxyUrl(post.headerImage.url);
+          console.log('Converted to proxy URL:', proxyUrl);
+          return proxyUrl;
+        })()
           } : undefined
         };
       })
@@ -313,7 +324,12 @@ export async function getProject(id: string): Promise<FormattedProject | null> {
           shortenedDate,
           headerImage: post.headerImage ? {
             ...post.headerImage,
-            url: fixImageUrl(post.headerImage.url)
+            url: (() => {
+          console.log('S3 URL from Keystone:', post.headerImage.url);
+          const proxyUrl = toProxyUrl(post.headerImage.url);
+          console.log('Converted to proxy URL:', proxyUrl);
+          return proxyUrl;
+        })()
           } : undefined,
           content: post.content?.document,
           author: post.author

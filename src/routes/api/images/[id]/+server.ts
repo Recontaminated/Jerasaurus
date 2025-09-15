@@ -1,39 +1,32 @@
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { env } from '$env/dynamic/private';
 
-const KEYSTONE_URL = env.KEYSTONE_URL || 'http://localhost:3000';
-
-export const GET: RequestHandler = async ({ params, url, setHeaders }) => {
+export const GET: RequestHandler = async ({ params, url, setHeaders, fetch }) => {
 	try {
-		const imageId = params.id;
-		
-		if (!imageId) {
-			throw error(400, 'Image ID is required');
+		const encodedUrl = params.id;
+
+		if (!encodedUrl) {
+			throw error(400, 'Image URL is required');
 		}
 
-		// Extract query parameters for image transformations
-		const width = url.searchParams.get('w');
-		const height = url.searchParams.get('h');
-		const quality = url.searchParams.get('q');
-		const format = url.searchParams.get('f');
+		// Decode the S3 URL
+		const s3Url = decodeURIComponent(encodedUrl);
+		console.log('Image proxy - decoded parameter:', s3Url);
 
-		// Build Keystone image URL
-		let keystoneImageUrl = `${KEYSTONE_URL}/images/${imageId}`;
-		
-		// Add query parameters if provided
-		const searchParams = new URLSearchParams();
-		if (width) searchParams.set('width', width);
-		if (height) searchParams.set('height', height);
-		if (quality) searchParams.set('quality', quality);
-		if (format) searchParams.set('format', format);
-		
-		if (searchParams.toString()) {
-			keystoneImageUrl += `?${searchParams.toString()}`;
+		// Check if it's a full URL or just an ID
+		let imageUrl: string;
+		if (s3Url.startsWith('http://') || s3Url.startsWith('https://')) {
+			imageUrl = s3Url;
+			console.log('Using full S3 URL:', imageUrl);
+		} else {
+			// If just an ID/filename was passed, this shouldn't happen with current setup
+			console.error('Received non-URL parameter:', s3Url);
+			throw error(400, 'Invalid image URL format');
 		}
 
-		// Fetch image from Keystone
-		const response = await fetch(keystoneImageUrl);
+		// Fetch image from S3 using event.fetch for proper handling
+		const response = await fetch(imageUrl);
+		console.log('S3 response status:', response.status, response.statusText);
 		
 		if (!response.ok) {
 			if (response.status === 404) {
