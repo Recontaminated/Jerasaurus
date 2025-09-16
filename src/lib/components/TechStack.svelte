@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ScrollReveal from '$lib/components/ScrollReveal.svelte';
+	import BridgeVisualization from '$lib/components/BridgeVisualization.svelte';
 
 	interface TechItem {
 		name: string;
@@ -19,6 +20,7 @@
 	const devFrameworks: TechItem[] = [
 		{ name: 'Svelte', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg' },
 		{ name: 'Vue', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg' },
+		{ name: 'PyTorch', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg' },
 		{ name: 'Jest', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg' }
 	];
 
@@ -70,6 +72,8 @@
 </script>
 
 <section class="relative mx-auto max-w-6xl px-6 py-24">
+	<BridgeVisualization />
+
 	<ScrollReveal delay={100}>
 		<div class="text-center mb-12">
 			<div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur mb-6">

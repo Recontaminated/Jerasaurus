@@ -243,7 +243,7 @@
 	});
 </script>
 
-<div class="p-6 bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl hover:border-purple-500/50 transition-all duration-300">
+<div class="p-6 bg-gray-900/80 backdrop-blur-md border border-gray-700 rounded-2xl hover:border-purple-500/50 transition-all duration-300">
 	<div class="flex justify-between items-center mb-6">
 		<h3 class="text-xl font-semibold text-white">Languages (Last 7 Days)</h3>
 		<span class="text-sm text-gray-400">Top {languages.length} of {apiLanguages.length}</span>
