@@ -172,7 +172,7 @@
                                 </h3>
 
                                 {#if project.description}
-                                    <p class="text-white/60 text-lg mb-6">
+                                    <p class="text-white/60 text-base mb-6">
                                         {project.description}
                                     </p>
                                 {/if}
