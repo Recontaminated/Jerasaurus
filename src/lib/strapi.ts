@@ -95,6 +95,7 @@ export async function getProjects(): Promise<Project[]> {
 			sort: 'createdAt:desc'
 		});
 
+
 		return response.data.map((item: any) => ({
 			id: item.documentId || item.id,
 			name: item.name || item.title,
@@ -105,7 +106,7 @@ export async function getProjects(): Promise<Project[]> {
 				if (typeof tag === 'string') return tag;
 				return tag.name || tag.title || tag.tag || JSON.stringify(tag);
 			}),
-			blog_posts: item.blog_posts?.data || item.blog_posts || [],
+			blog_posts: item.articles || [],
 			createdAt: item.createdAt,
 			updatedAt: item.updatedAt,
 			documentId: item.documentId
@@ -119,30 +120,98 @@ export async function getProjects(): Promise<Project[]> {
 export async function getProject(id: string): Promise<Project | null> {
 	try {
 		const projects = strapi.collection('projects');
-		const response = await projects.findOne(id, {
-			populate: '*'
-		});
 
-		if (!response || !response.data) {
-			return null;
+		// Try to fetch by documentId directly
+		try {
+			const response = await projects.findOne(id, {
+				populate: ['articles', 'cover', 'heroimage', 'tags']
+			});
+
+			if (response && response.data) {
+				const item = response.data;
+
+				// Process articles data
+				let processedBlogPosts: BlogPost[] = [];
+				if (item.articles) {
+					const articlesData = Array.isArray(item.articles) ? item.articles : [item.articles];
+					processedBlogPosts = articlesData.filter(Boolean).map((post: any) => ({
+						id: post.documentId || post.id,
+						title: post.title || '',
+						slug: post.slug || '',
+						content: post.content || '',
+						date: post.date || post.createdAt,
+						cover: post.cover,
+						tags: post.tags || [],
+						createdAt: post.createdAt,
+						updatedAt: post.updatedAt
+					}));
+				}
+
+				return {
+					id: item.documentId || item.id,
+					name: item.name || item.title,
+					description: item.description,
+					cover: item.cover,
+					heroimage: item.heroimage,
+					tags: (item.tags || []).map((tag: any) => {
+						if (typeof tag === 'string') return tag;
+						return tag.name || tag.title || tag.tag || JSON.stringify(tag);
+					}),
+					blog_posts: processedBlogPosts,
+					createdAt: item.createdAt,
+					updatedAt: item.updatedAt,
+					documentId: item.documentId
+				};
+			}
+		} catch (err) {
+			// If direct fetch fails, try fetching all and filtering
+			const response = await projects.find({
+				populate: '*'
+			});
+
+			if (!response || !response.data) {
+				return null;
+			}
+
+			const item = response.data.find((p: any) => p.documentId === id);
+
+			if (!item) {
+				return null;
+			}
+
+			// Process articles data
+			let processedBlogPosts: BlogPost[] = [];
+			if (item.articles) {
+				const articlesData = Array.isArray(item.articles) ? item.articles : [item.articles];
+				processedBlogPosts = articlesData.filter(Boolean).map((post: any) => ({
+					id: post.documentId || post.id,
+					title: post.title || '',
+					slug: post.slug || '',
+					content: post.content || '',
+					date: post.date || post.createdAt,
+					cover: post.cover,
+					tags: post.tags || [],
+					createdAt: post.createdAt,
+					updatedAt: post.updatedAt
+				}));
+			}
+
+			return {
+				id: item.documentId || item.id,
+				name: item.name || item.title,
+				description: item.description,
+				cover: item.cover,
+				heroimage: item.heroimage,
+				tags: (item.tags || []).map((tag: any) => {
+					if (typeof tag === 'string') return tag;
+					return tag.name || tag.title || tag.tag || JSON.stringify(tag);
+				}),
+				blog_posts: processedBlogPosts,
+				createdAt: item.createdAt,
+				updatedAt: item.updatedAt,
+				documentId: item.documentId
+			};
 		}
-
-		const item = response.data;
-		return {
-			id: item.documentId || item.id,
-			name: item.name || item.title,
-			description: item.description,
-			cover: item.cover,
-			heroimage: item.heroimage,
-			tags: (item.tags || []).map((tag: any) => {
-				if (typeof tag === 'string') return tag;
-				return tag.name || tag.title || tag.tag || JSON.stringify(tag);
-			}),
-			blog_posts: item.blog_posts?.data || item.blog_posts || [],
-			createdAt: item.createdAt,
-			updatedAt: item.updatedAt,
-			documentId: item.documentId
-		};
 	} catch (error) {
 		console.error('Error fetching project:', error);
 		return null;

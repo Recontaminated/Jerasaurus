@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		return {
 			project
 		};
-	} catch (err) {
+	} catch (err: any) {
 		console.error('Error loading project:', err);
 		if (err?.status === 404) {
 			throw err;
