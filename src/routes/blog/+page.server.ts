@@ -11,8 +11,11 @@ export const load: PageServerLoad = async () => {
 					slug: post.slug,
 					title: post.title,
 					description: '',
-					updatedAt: post.date || post.updatedAt,
-					shortenedDate: new Date(post.date || post.updatedAt).toLocaleDateString()
+					date: post.date || post.createdAt,
+					createdAt: post.createdAt,
+					updatedAt: post.updatedAt,
+					tags: post.tags || [],
+					shortenedDate: new Date(post.date || post.createdAt).toLocaleDateString()
 				},
 				headerImage: post.cover?.url ? `/api/images${post.cover.url}` : null
 			}))
