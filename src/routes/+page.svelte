@@ -9,6 +9,14 @@
     let { data } = $props();
     let projects = data.projects;
 
+    function getImageUrl(imageUrl: string | undefined): string | undefined {
+        if (!imageUrl) return undefined;
+        if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+            return imageUrl;
+        }
+        return `/api/images${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`;
+    }
+
     const socials = [
         { href: 'https://github.com/recontaminated', label: 'GitHub', icon: 'github' },
         { href: 'https://x.com/', label: 'X', icon: 'x' },
@@ -86,17 +94,28 @@
 <!-- Scroll-triggered Color Bar -->
 <ScrollColorBar />
 
-<!-- Projects Section -->
-<section id="projects" class="mx-auto mt-8 max-w-7xl px-6">
+<!-- Projects Section - Grand Showcase -->
+<section id="projects" class="relative mx-auto mt-24 px-6">
     <ScrollReveal delay={100}>
+        <!-- Decorative Background Elements -->
+        <div class="absolute inset-0 pointer-events-none overflow-visible">
+            <div class="absolute -top-24 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        </div>
+
         <!-- Section Header -->
-        <div class="text-center mb-16">
+        <div class="relative text-center mb-16 max-w-4xl mx-auto">
             <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur mb-6">
                 <span class="text-sm text-white/60">Featured Work</span>
             </div>
 
-            <h2 class="text-4xl sm:text-5xl font-bold text-white/90 mb-6">
-                Projects & Creations
+            <h2 class="text-3xl sm:text-4xl font-bold text-white/90 mb-6">
+                <span>
+                    Personal
+                </span>
+                <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                    {" Projects"}
+                </span>
             </h2>
 
             <p class="max-w-2xl mx-auto text-lg text-white/70 leading-relaxed">
@@ -106,63 +125,159 @@
             </p>
         </div>
 
-        <!-- Project Cards Grid -->
+        <!-- Featured Projects Showcase -->
         {#if projects && projects.length > 0}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {#each projects as project, index}
+            <!-- First Project - Hero Feature -->
+            {#if projects[0]}
+                <div class="relative max-w-7xl mx-auto mb-16">
                     <a
-                        href="/projects/{project.id}"
-                        class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br {index % 4 === 0 ? 'from-purple-600/10 to-pink-600/10 hover:border-purple-500/50' : index % 4 === 1 ? 'from-blue-600/10 to-cyan-600/10 hover:border-blue-500/50' : index % 4 === 2 ? 'from-green-600/10 to-teal-600/10 hover:border-green-500/50' : 'from-orange-600/10 to-red-600/10 hover:border-orange-500/50'} transition-all duration-300"
+                        href="/projects/{projects[0].id}"
+                        class="group block relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-600/5 via-transparent to-blue-600/5 backdrop-blur-sm transition-all duration-500 hover:border-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2"
                     >
-                        {#if project.heroimage?.url}
-                            <div class="aspect-video w-full overflow-hidden bg-white/5">
-                                <img
-                                    src={project.heroimage.url}
-                                    alt={project.heroimage.alternativeText || project.name}
-                                    class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                                    loading="lazy"
-                                />
+                        <div class="grid lg:grid-cols-2 min-h-[500px]">
+                            <!-- Image Side -->
+                            <div class="relative overflow-hidden bg-gradient-to-br from-purple-600/20 to-blue-600/20">
+                                {#if getImageUrl(projects[0].cover?.url || projects[0].heroimage?.url)}
+                                    <img
+                                        src={getImageUrl(projects[0].cover?.url || projects[0].heroimage?.url)}
+                                        alt={(projects[0].cover?.alternativeText || projects[0].heroimage?.alternativeText) || projects[0].name}
+                                        class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        loading="lazy"
+                                    />
+                                {:else}
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="text-white/10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                {/if}
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
                             </div>
-                        {/if}
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
-                                {project.name}
-                            </h3>
-                            {#if project.description}
-                                <p class="text-white/60 line-clamp-2">
-                                    {project.description}
-                                </p>
-                            {/if}
-                            {#if project.blog_posts && project.blog_posts.length > 0}
-                                <div class="mt-4 text-xs text-white/40">
-                                    {project.blog_posts.length} related post{project.blog_posts.length !== 1 ? 's' : ''}
+
+                            <!-- Content Side -->
+                            <div class="relative p-10 lg:p-12 flex flex-col justify-center">
+                                <div class="inline-flex items-center gap-2 rounded-full bg-purple-500/10 border border-purple-500/20 px-4 py-1.5 mb-6 w-fit">
+                                    <span class="text-xs font-medium text-purple-300">FEATURED PROJECT</span>
                                 </div>
-                            {/if}
+
+                                <h3 class="text-3xl lg:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-blue-300 transition-all duration-300">
+                                    {projects[0].name}
+                                </h3>
+
+                                {#if projects[0].description}
+                                    <p class="text-white/60 text-lg mb-6 line-clamp-3">
+                                        {projects[0].description}
+                                    </p>
+                                {/if}
+
+                                {#if projects[0].tags && projects[0].tags.length > 0}
+                                    <div class="flex flex-wrap gap-2 mb-6">
+                                        {#each projects[0].tags.slice(0, 4) as tag}
+                                            <span class="px-3 py-1 text-xs font-medium bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 rounded-full border border-purple-500/20">
+                                                {tag.name || tag}
+                                            </span>
+                                        {/each}
+                                    </div>
+                                {/if}
+
+                                <div class="flex items-center gap-2 text-purple-300 group-hover:text-purple-400 transition-colors">
+                                    <span class="font-medium">Explore Project</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </a>
-                {/each}
-            </div>
+                </div>
+            {/if}
 
-            <div class="mt-12 text-center">
+            <!-- Other Projects Grid -->
+            {#if projects.length > 1}
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    {#each projects.slice(1, 7) as project, index}
+                        <a
+                            href="/projects/{project.id}"
+                            class="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-1"
+                        >
+                            <!-- Project Image -->
+                            <div class="aspect-[4/3] overflow-hidden bg-gradient-to-br {index % 3 === 0 ? 'from-purple-600/20 to-pink-600/20' : index % 3 === 1 ? 'from-blue-600/20 to-cyan-600/20' : 'from-green-600/20 to-teal-600/20'}">
+                                {#if getImageUrl(project.cover?.url || project.heroimage?.url)}
+                                    <img
+                                        src={getImageUrl(project.cover?.url || project.heroimage?.url)}
+                                        alt={(project.cover?.alternativeText || project.heroimage?.alternativeText) || project.name}
+                                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        loading="lazy"
+                                    />
+                                {:else}
+                                    <div class="h-full w-full flex items-center justify-center">
+                                        <div class="text-white/10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                {/if}
+                            </div>
+
+                            <!-- Content -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-blue-400 group-hover:bg-clip-text transition-all duration-300">
+                                    {project.name}
+                                </h3>
+
+                                {#if project.description}
+                                    <p class="text-white/50 text-sm line-clamp-2 mb-4">
+                                        {project.description}
+                                    </p>
+                                {/if}
+
+                                {#if project.tags && project.tags.length > 0}
+                                    <div class="flex flex-wrap gap-1">
+                                        {#each project.tags.slice(0, 3) as tag}
+                                            <span class="px-2 py-0.5 text-xs font-medium bg-white/10 text-white/60 rounded-full">
+                                                {tag.name || tag}
+                                            </span>
+                                        {/each}
+                                    </div>
+                                {/if}
+                            </div>
+
+                            <!-- Hover Effect Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-purple-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        </a>
+                    {/each}
+                </div>
+            {/if}
+
+            <!-- View All Button -->
+            <div class="text-center">
                 <a
                     href="/projects"
-                    class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur transition-all hover:bg-white/10 hover:border-white/20"
+                    class="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-lg shadow-purple-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/40 hover:-translate-y-0.5"
                 >
-                    View All Projects
-                    <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
-                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    <span>Explore All Projects</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                 </a>
             </div>
         {:else}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-purple-600/10 to-pink-600/10 p-6 transition-all duration-300 hover:border-purple-500/50">
-                    <h3 class="text-xl font-semibold text-white mb-2">Projects Coming Soon</h3>
-                    <p class="text-white/60">Working on something amazing...</p>
-                </div>
-                <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/10 p-6 transition-all duration-300 hover:border-blue-500/50">
-                    <h3 class="text-xl font-semibold text-white mb-2">Stay Tuned</h3>
-                    <p class="text-white/60">Building something incredible...</p>
+            <!-- Empty State -->
+            <div class="max-w-4xl mx-auto">
+                <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-600/10 to-blue-600/10 p-16 text-center backdrop-blur-sm">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-blue-600/5"></div>
+                    <div class="relative">
+                        <div class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Projects Loading...</h3>
+                        <p class="text-white/60 text-lg">Amazing creations are on their way!</p>
+                    </div>
                 </div>
             </div>
         {/if}
@@ -171,7 +286,7 @@
 
 <section id="contact" class="mx-auto mt-24 mb-24 max-w-6xl px-6">
     <ScrollReveal delay={200}>
-        <h2 class="text-2xl font-semibold">Contact</h2>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white/90">Contact</h2>
         <p class="mt-3 text-white/70">Reach out at jeremy@example.com</p>
         <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
     </ScrollReveal>
@@ -182,6 +297,14 @@
         display: -webkit-box;
         -webkit-line-clamp: 2;
         line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }

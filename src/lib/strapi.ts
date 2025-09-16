@@ -25,10 +25,15 @@ export interface Project {
 	id: number | string;
 	name: string;
 	description: string;
+	cover?: {
+		url: string;
+		alternativeText?: string;
+	};
 	heroimage?: {
 		url: string;
 		alternativeText?: string;
 	};
+	tags?: any[];
 	blog_posts?: BlogPost[];
 	createdAt: string;
 	updatedAt: string;
@@ -92,9 +97,11 @@ export async function getProjects(): Promise<Project[]> {
 
 		return response.data.map((item: any) => ({
 			id: item.documentId || item.id,
-			name: item.name,
+			name: item.name || item.title,
 			description: item.description,
+			cover: item.cover,
 			heroimage: item.heroimage,
+			tags: item.tags || [],
 			blog_posts: item.blog_posts?.data || item.blog_posts || [],
 			createdAt: item.createdAt,
 			updatedAt: item.updatedAt,
@@ -120,9 +127,11 @@ export async function getProject(id: string): Promise<Project | null> {
 		const item = response.data;
 		return {
 			id: item.documentId || item.id,
-			name: item.name,
+			name: item.name || item.title,
 			description: item.description,
+			cover: item.cover,
 			heroimage: item.heroimage,
+			tags: item.tags || [],
 			blog_posts: item.blog_posts?.data || item.blog_posts || [],
 			createdAt: item.createdAt,
 			updatedAt: item.updatedAt,
