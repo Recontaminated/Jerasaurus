@@ -20,11 +20,10 @@
 		<div style="
 			position:absolute;
 			inset:0;
-			background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
-			radial-gradient(ellipse 70% 50% at 30% 10%, rgba(0, 255, 255, 0.28), transparent 60%),
-			radial-gradient(ellipse 60% 50% at 50% -10%, rgba(138, 43, 226, 0.18), transparent 65%),
-			radial-gradient(ellipse 75% 40% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
-			radial-gradient(ellipse 100% 70% at 50% -30%, black, transparent 70%),
+			background: radial-gradient(ellipse 70% 50% at 70% 10%, rgba(255, 20, 147, 0.15), transparent 50%),
+			radial-gradient(ellipse 60% 40% at 30% 5%, rgba(0, 255, 255, 0.28), transparent 60%),
+			radial-gradient(ellipse 50% 40% at 50% 3%, rgba(138, 43, 226, 0.18), transparent 65%),
+			radial-gradient(ellipse 65% 35% at 80% 15%, rgba(255, 215, 0, 0.08), transparent 40%),
 			transparent;
 			filter: blur(80px);
 			transform: translateZ(0);
@@ -33,11 +32,10 @@
 	<!-- ambient gradient background -->
 	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 		<div class="absolute inset-0" style="
-			background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
-			radial-gradient(ellipse 70% 50% at 30% 10%, rgba(0, 255, 255, 0.28), transparent 60%),
-			radial-gradient(ellipse 60% 50% at 50% -10%, rgba(138, 43, 226, 0.18), transparent 65%),
-			radial-gradient(ellipse 75% 40% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
-			radial-gradient(ellipse 100% 70% at 50% -30%, black, transparent 70%),
+			background: radial-gradient(ellipse 70% 50% at 70% 10%, rgba(255, 20, 147, 0.15), transparent 50%),
+			radial-gradient(ellipse 60% 40% at 30% 5%, rgba(0, 255, 255, 0.28), transparent 60%),
+			radial-gradient(ellipse 50% 40% at 50% 3%, rgba(138, 43, 226, 0.18), transparent 65%),
+			radial-gradient(ellipse 65% 35% at 80% 15%, rgba(255, 215, 0, 0.08), transparent 40%),
 			transparent;
 			filter: blur(80px);
 			transform: translateZ(0);
