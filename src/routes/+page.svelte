@@ -5,6 +5,7 @@
     import Reveal from '$lib/components/Reveal.svelte';
     import ScrollReveal from '$lib/components/ScrollReveal.svelte';
     import ScrollColorBar from '$lib/components/ScrollColorBar.svelte';
+    import ContactForm from '$lib/components/ContactForm.svelte';
 
     let { data } = $props();
     let projects = data.projects;
@@ -228,9 +229,27 @@
 
 <section id="contact" class="mx-auto mt-24 mb-24 max-w-6xl px-6">
     <ScrollReveal delay={200}>
-        <h2 class="text-3xl sm:text-4xl font-bold text-white/90">Contact</h2>
-        <p class="mt-3 text-white/70">Reach out at jeremy@example.com</p>
-        <div class="mt-6 h-24 rounded-3xl border border-white/10 bg-white/5"></div>
+        <div class="max-w-2xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur mb-6">
+                    <span class="text-sm text-white/60">Get in Touch</span>
+                </div>
+
+                <h2 class="text-3xl sm:text-4xl font-bold text-white/90 mb-4">
+                    Let's Work Together
+                </h2>
+
+                <p class="text-white/70 text-lg">
+                    I'd love to hear from you. Send me a message and I'll get back to you within a few days!
+                </p>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-8">
+                <ContactForm />
+            </div>
+        </div>
     </ScrollReveal>
 </section>
 

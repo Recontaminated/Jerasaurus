@@ -64,9 +64,16 @@
 			// Nav appearance changes after scrolling
 			isScrolled = scrollY > window.innerHeight / 2;
 
+			// Special case: if we're at the very top, always show home as active
+			if (scrollY < 100) {
+				if (activeSection !== 'home') {
+					activeSection = 'home';
+				}
+				return;
+			}
+
 			// Determine active section based on scroll position
 			const sections = [
-				{ id: 'home', offset: 0 },
 				{ id: 'about', offset: 0 },
 				{ id: 'skills', offset: 0 },
 				{ id: 'projects', offset: 0 },
@@ -74,14 +81,21 @@
 			];
 
 			// Calculate offsets for each section
-			for (let i = 1; i < sections.length; i++) {
+			for (let i = 0; i < sections.length; i++) {
 				const element = document.getElementById(sections[i].id);
 				if (element) {
-					// Switch when section is about to enter viewport (adjust this value to control when switching happens)
-					sections[i].offset = element.offsetTop - window.innerHeight * 0.4; // Switch when section is 40% from bottom of viewport
-				} else {
-					console.warn(`Element with id '${sections[i].id}' not found`);
+					// Use the top of the element minus some offset for better detection
+					sections[i].offset = element.offsetTop - 100;
 				}
+			}
+
+			// Check if we're near the bottom of the page
+			const isNearBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
+			if (isNearBottom) {
+				if (activeSection !== 'contact') {
+					activeSection = 'contact';
+				}
+				return;
 			}
 
 			// Find the current section
