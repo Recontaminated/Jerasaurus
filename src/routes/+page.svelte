@@ -19,8 +19,7 @@
     }
 
     const socials = [
-        { href: 'https://github.com/recontaminated', label: 'GitHub', icon: 'github' },
-        { href: 'https://x.com/', label: 'X', icon: 'x' },
+        { href: 'https://github.com/Jerasaurus', label: 'GitHub', icon: 'github' },
         { href: 'https://www.linkedin.com/', label: 'LinkedIn', icon: 'linkedin' }
     ];
 
@@ -243,7 +242,9 @@
                 </h2>
 
                 <p class="text-white/70 text-lg">
-                    I'd love to hear from you. Send me a message and I'll get back to you within a few days!
+                    I'd love to hear from you. Send me a message and I'll get back to you within a few days! 
+
+                    This form notifies my devices instantly.
                 </p>
             </div>
 
