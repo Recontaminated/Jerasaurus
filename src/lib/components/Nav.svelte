@@ -64,52 +64,43 @@
 			// Nav appearance changes after scrolling
 			isScrolled = scrollY > window.innerHeight / 2;
 
-			// Special case: if we're at the very top, always show home as active
-			if (scrollY < 100) {
-				if (activeSection !== 'home') {
-					activeSection = 'home';
-				}
-				return;
-			}
+			// Get all sections with their positions
+			const sections = ['about', 'skills', 'projects', 'contact'];
+			const sectionData = [];
 
-			// Determine active section based on scroll position
-			const sections = [
-				{ id: 'about', offset: 0 },
-				{ id: 'skills', offset: 0 },
-				{ id: 'projects', offset: 0 },
-				{ id: 'contact', offset: 0 }
-			];
+			// Add home section (top of page)
+			sectionData.push({
+				id: 'home',
+				top: 0,
+				bottom: document.getElementById('about')?.offsetTop || window.innerHeight
+			});
 
-			// Calculate offsets for each section
+			// Add other sections
 			for (let i = 0; i < sections.length; i++) {
-				const element = document.getElementById(sections[i].id);
+				const element = document.getElementById(sections[i]);
 				if (element) {
-					// Use the top of the element minus some offset for better detection
-					sections[i].offset = element.offsetTop - 100;
+					const nextElement = i < sections.length - 1 ? document.getElementById(sections[i + 1]) : null;
+					sectionData.push({
+						id: sections[i],
+						top: element.offsetTop,
+						bottom: nextElement ? nextElement.offsetTop : document.documentElement.scrollHeight
+					});
 				}
 			}
 
-			// Check if we're near the bottom of the page
-			const isNearBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
-			if (isNearBottom) {
-				if (activeSection !== 'contact') {
-					activeSection = 'contact';
-				}
-				return;
-			}
+			// Find which section the viewport center is in
+			const viewportCenter = scrollY + window.innerHeight / 2;
 
-			// Find the current section
 			let current = 'home';
-
-			for (let i = sections.length - 1; i >= 0; i--) {
-				if (scrollY >= sections[i].offset) {
-					current = sections[i].id;
+			for (const section of sectionData) {
+				if (viewportCenter >= section.top && viewportCenter < section.bottom) {
+					current = section.id;
 					break;
 				}
 			}
 
 			if (activeSection !== current) {
-				activeSection = current; // Trigger Svelte reactivity
+				activeSection = current;
 			}
 		};
 

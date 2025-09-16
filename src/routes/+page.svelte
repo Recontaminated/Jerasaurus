@@ -77,7 +77,9 @@
 <!-- <div class="h sm:h-48"></div> -->
 
 <!-- About/Philosophy section -->
-<AboutSection />
+<div id="about">
+    <AboutSection />
+</div>
 
 <!-- More space before cards -->
 <div class="h-24"></div>
