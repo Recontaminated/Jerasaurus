@@ -47,9 +47,16 @@
 		if (href.startsWith('#')) {
 			e.preventDefault();
 			const targetId = href.slice(1);
-			const element = document.getElementById(targetId);
-			if (element) {
-				element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+			// If we're not on the home page, navigate to home page with the hash
+			if (pathname !== '/') {
+				window.location.href = '/' + href;
+			} else {
+				// We're on the home page, just scroll to the section
+				const element = document.getElementById(targetId);
+				if (element) {
+					element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				}
 			}
 		} else if (href === '/' && pathname === '/') {
 			e.preventDefault();
