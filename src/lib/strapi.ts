@@ -101,7 +101,10 @@ export async function getProjects(): Promise<Project[]> {
 			description: item.description,
 			cover: item.cover,
 			heroimage: item.heroimage,
-			tags: item.tags || [],
+			tags: (item.tags || []).map((tag: any) => {
+				if (typeof tag === 'string') return tag;
+				return tag.name || tag.title || tag.tag || JSON.stringify(tag);
+			}),
 			blog_posts: item.blog_posts?.data || item.blog_posts || [],
 			createdAt: item.createdAt,
 			updatedAt: item.updatedAt,
@@ -131,7 +134,10 @@ export async function getProject(id: string): Promise<Project | null> {
 			description: item.description,
 			cover: item.cover,
 			heroimage: item.heroimage,
-			tags: item.tags || [],
+			tags: (item.tags || []).map((tag: any) => {
+				if (typeof tag === 'string') return tag;
+				return tag.name || tag.title || tag.tag || JSON.stringify(tag);
+			}),
 			blog_posts: item.blog_posts?.data || item.blog_posts || [],
 			createdAt: item.createdAt,
 			updatedAt: item.updatedAt,

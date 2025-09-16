@@ -111,36 +111,35 @@
 
             <h2 class="text-3xl sm:text-4xl font-bold text-white/90 mb-6">
                 <span>
-                    Personal
+                    Things I've
                 </span>
                 <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    {" Projects"}
+                    {" Built"}
                 </span>
             </h2>
 
             <p class="max-w-2xl mx-auto text-lg text-white/70 leading-relaxed">
-                A collection of my recent work spanning web applications, embedded systems,
-                and open-source contributions. Each project represents a unique challenge
-                and learning opportunity.
+                Some projects I'm excited about! From tinkering with hardware to
+                building web apps, I love diving into new challenges and learning
+                something new along the way.
             </p>
         </div>
 
         <!-- Featured Projects Showcase -->
         {#if projects && projects.length > 0}
-            <!-- First Project - Hero Feature -->
-            {#if projects[0]}
+            {#each projects as project, index}
                 <div class="relative max-w-7xl mx-auto mb-16">
                     <a
-                        href="/projects/{projects[0].id}"
+                        href="/projects/{project.id}"
                         class="group block relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-600/5 via-transparent to-blue-600/5 backdrop-blur-sm transition-all duration-500 hover:border-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2"
                     >
                         <div class="grid lg:grid-cols-2 min-h-[500px]">
                             <!-- Image Side -->
                             <div class="relative overflow-hidden bg-gradient-to-br from-purple-600/20 to-blue-600/20">
-                                {#if getImageUrl(projects[0].cover?.url || projects[0].heroimage?.url)}
+                                {#if getImageUrl(project.cover?.url || project.heroimage?.url)}
                                     <img
-                                        src={getImageUrl(projects[0].cover?.url || projects[0].heroimage?.url)}
-                                        alt={(projects[0].cover?.alternativeText || projects[0].heroimage?.alternativeText) || projects[0].name}
+                                        src={getImageUrl(project.cover?.url || project.heroimage?.url)}
+                                        alt={(project.cover?.alternativeText || project.heroimage?.alternativeText) || project.name}
                                         class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                                         loading="lazy"
                                     />
@@ -158,29 +157,26 @@
 
                             <!-- Content Side -->
                             <div class="relative p-10 lg:p-12 flex flex-col justify-center">
-                                <div class="inline-flex items-center gap-2 rounded-full bg-purple-500/10 border border-purple-500/20 px-4 py-1.5 mb-6 w-fit">
-                                    <span class="text-xs font-medium text-purple-300">FEATURED PROJECT</span>
-                                </div>
-
-                                <h3 class="text-3xl lg:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-blue-300 transition-all duration-300">
-                                    {projects[0].name}
-                                </h3>
-
-                                {#if projects[0].description}
-                                    <p class="text-white/60 text-lg mb-6 line-clamp-3">
-                                        {projects[0].description}
-                                    </p>
-                                {/if}
-
-                                {#if projects[0].tags && projects[0].tags.length > 0}
-                                    <div class="flex flex-wrap gap-2 mb-6">
-                                        {#each projects[0].tags.slice(0, 4) as tag}
-                                            <span class="px-3 py-1 text-xs font-medium bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 rounded-full border border-purple-500/20">
-                                                {tag.name || tag}
+                                {#if project.tags && project.tags.length > 0}
+                                    <div class="flex flex-wrap gap-2 mb-6 max-w-full">
+                                        {#each project.tags.filter(t => t.toLowerCase() !== 'featured').slice(0, 6) as tag}
+                                            <span class="px-3 py-1 text-xs font-medium bg-purple-500/10 text-purple-300 rounded-full border border-purple-500/20">
+                                                {tag}
                                             </span>
                                         {/each}
                                     </div>
                                 {/if}
+
+                                <h3 class="text-3xl lg:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-blue-300 transition-all duration-300">
+                                    {project.name}
+                                </h3>
+
+                                {#if project.description}
+                                    <p class="text-white/60 text-lg mb-6">
+                                        {project.description}
+                                    </p>
+                                {/if}
+
 
                                 <div class="flex items-center gap-2 text-purple-300 group-hover:text-purple-400 transition-colors">
                                     <span class="font-medium">Explore Project</span>
@@ -192,65 +188,11 @@
                         </div>
                     </a>
                 </div>
-            {/if}
-
-            <!-- Other Projects Grid -->
-            {#if projects.length > 1}
-                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                    {#each projects.slice(1, 7) as project, index}
-                        <a
-                            href="/projects/{project.id}"
-                            class="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-1"
-                        >
-                            <!-- Project Image -->
-                            <div class="aspect-[4/3] overflow-hidden bg-gradient-to-br {index % 3 === 0 ? 'from-purple-600/20 to-pink-600/20' : index % 3 === 1 ? 'from-blue-600/20 to-cyan-600/20' : 'from-green-600/20 to-teal-600/20'}">
-                                {#if getImageUrl(project.cover?.url || project.heroimage?.url)}
-                                    <img
-                                        src={getImageUrl(project.cover?.url || project.heroimage?.url)}
-                                        alt={(project.cover?.alternativeText || project.heroimage?.alternativeText) || project.name}
-                                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                        loading="lazy"
-                                    />
-                                {:else}
-                                    <div class="h-full w-full flex items-center justify-center">
-                                        <div class="text-white/10">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                {/if}
-                            </div>
-
-                            <!-- Content -->
-                            <div class="p-6">
-                                <h3 class="text-xl font-bold mb-2 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-blue-400 group-hover:bg-clip-text transition-all duration-300">
-                                    {project.name}
-                                </h3>
-
-                                {#if project.description}
-                                    <p class="text-white/50 text-sm line-clamp-2 mb-4">
-                                        {project.description}
-                                    </p>
-                                {/if}
-
-                                {#if project.tags && project.tags.length > 0}
-                                    <div class="flex flex-wrap gap-1">
-                                        {#each project.tags.slice(0, 3) as tag}
-                                            <span class="px-2 py-0.5 text-xs font-medium bg-white/10 text-white/60 rounded-full">
-                                                {tag.name || tag}
-                                            </span>
-                                        {/each}
-                                    </div>
-                                {/if}
-                            </div>
-
-                            <!-- Hover Effect Overlay -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-purple-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                        </a>
-                    {/each}
-                </div>
-            {/if}
+                <!-- Add margin between featured projects if there are multiple -->
+                {#if index < projects.length - 1}
+                    <div class="mb-12"></div>
+                {/if}
+            {/each}
 
             <!-- View All Button -->
             <div class="text-center">

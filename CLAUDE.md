@@ -20,6 +20,11 @@
 - Cover images are proxied through `/api/images` endpoint
 - Gradient overlays for hover effects
 - Tags use consistent pill style with subtle backgrounds
+- Grid cards container: `max-w-6xl` with `gap-6` spacing
+- Card padding: `p-5`
+- Card title size: `text-lg` (reduced from text-xl)
+- Featured project shows first 2 tags at top as category indicators
+- Remaining tags shown below description
 
 ### Color Accents
 - Purple gradient for special emphasis: `bg-gradient-to-r from-purple-400 to-blue-400`
